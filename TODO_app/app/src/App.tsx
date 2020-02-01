@@ -1,24 +1,22 @@
 import React from 'react';
-import logo from './logo.svg';
+import { Layout } from 'antd';
+import TodoItems from './components/TodoItems';
 import './App.css';
+
+const { Header, Content } = Layout;
+const logo = require('./assets/logo.png')
 
 const App = () => {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Layout>
+        <Header style={{ color: '#fff', fontSize: '24px', fontWeight: 'bold' }}>
+          <p>Todo Items from Refugee Group</p>
+        </Header>
+        <Content style={{ padding: '10px 50px' }}>
+          <TodoItems />
+        </Content>
+      </Layout>
     </div>
   );
 }
