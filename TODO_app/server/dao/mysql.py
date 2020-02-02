@@ -22,8 +22,6 @@ class MySQL(object):
 		try:
 			nr = self.cursor.execute(sql)
 			self.conn.commit()
-			print(nr)
-			print("in my.sql")
 			return nr
 		except Exception as e:
 			self.conn.rollback()

@@ -8,8 +8,8 @@ class TodoItemsHandler(BaseHandler):
 		self.finish_success(result={"res": res})
 
 	async def post(self):
-		ts = self.get_argument("ts")
-		comment = self.get_argument("comment")
+		args = self.get_argument("data")
+		ts, comment = args["ts"], args["comment"]
 		nr = await self.db.todo.create_item(ts, comment)
 
 		if nr:
@@ -18,9 +18,8 @@ class TodoItemsHandler(BaseHandler):
 			self.finish_err(result={"res": "err"})
 
 	async def put(self):
-		id = self.get_argument("id")
-		ts = self.get_argument("ts")
-		comment = self.get_argument("comment")
+		args = self.get_argument("data")
+		id, ts, comment = args["id"], args["ts"], args["comment"]
 		nr = await self.db.todo.update_item(id, ts, comment)
 
 		if nr:

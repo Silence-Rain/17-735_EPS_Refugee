@@ -25,8 +25,8 @@ class BaseHandler(RequestHandler):
 
 	def set_default_headers(self):
 		self.set_header("Access-Control-Allow-Origin", "*")
-		self.set_header("Access-Control-Allow-Headers", "Access-Token, Content-Type, domain_name")
-		self.set_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
+		self.set_header("Access-Control-Allow-Headers", "Content-Type")
+		self.set_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT, DELETE')
 
 	def finish_success(self, **kwargs):
 		rs = {
@@ -53,4 +53,9 @@ class BaseHandler(RequestHandler):
 				return default
 		else:
 			return super(BaseHandler, self).get_argument(name, default, strip)
+
+	def options(self):
+		self.set_status(204)
+		self.finish()
+
 			
