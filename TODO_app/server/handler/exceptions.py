@@ -1,5 +1,6 @@
-from tornado.web import HTTPError
+# Definitions of exception classes
 
+from tornado.web import HTTPError
 
 class MissingArgumentError(HTTPError):
 	def __init__(self, arg_name):

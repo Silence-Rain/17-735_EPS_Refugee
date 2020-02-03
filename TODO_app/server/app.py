@@ -7,10 +7,14 @@ from config import *
 from dao.db import Database
 from dao.mysql import MySQL
 
+# Server listens to port 8888
 define("port", default=8888, type=int)
+# Disable general CORS requests
 define("TEST", default=False, type=bool)
 tornado.options.parse_command_line()
 
+# Establish connection to MySQL server
+# Connection params come from config.py
 db = MySQL(
 		host=DB_HOST,
 		user=DB_USER,
@@ -19,6 +23,7 @@ db = MySQL(
 		db=DB_DB
 	)
 
+# Create and configure a tornado web server
 application = tornado.web.Application(
 		handlers=routes.handlers,
 		db=Database(db),
@@ -27,6 +32,7 @@ application = tornado.web.Application(
 	)
 
 if __name__ == '__main__':
+	# Server start an async event loop and listen for requests
 	application.listen(options.port)
 	ioloop = tornado.ioloop.IOLoop.current()
 	ioloop.start()
