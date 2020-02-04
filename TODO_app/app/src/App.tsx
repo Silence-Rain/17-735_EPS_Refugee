@@ -5,6 +5,8 @@ import './App.css';
 
 const { Header, Content } = Layout;
 
+// Entry of application
+// Set the layout for index page
 const App = () => {
   return (
     <div className="App">

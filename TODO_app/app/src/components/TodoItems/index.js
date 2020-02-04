@@ -2,40 +2,8 @@ import React from 'react';
 import axios from 'axios';
 import { Table, Input, Button, Popconfirm, Form, message, Modal } from 'antd';
 
+// Use the template of Ant Design to implement an editable table
 const EditableContext = React.createContext();
-
-const SubmitForm = Form.create({ name: 'submit_form' })(
-  class extends React.Component {
-    render() {
-      const { visible, onCancel, onCreate, form } = this.props;
-      const { getFieldDecorator } = form;
-      return (
-        <Modal
-          visible={visible}
-          title="Create a new todo item"
-          okText="Create"
-          cancelText="Cancel"
-          onCancel={onCancel}
-          onOk={onCreate}
-        >
-          <Form layout="vertical">
-            <Form.Item label="Time">
-              {getFieldDecorator('ts', {
-                rules: [{ required: true }],
-                initialValue: new Date().toLocaleString(),
-              })(<Input />)}
-            </Form.Item>
-            <Form.Item label="Description">
-              {getFieldDecorator('comment', {
-                rules: [{ required: true }],
-              })(<Input />)}
-            </Form.Item>
-          </Form>
-        </Modal>
-      );
-    }
-  },
-);
 
 const EditableRow = ({ form, index, ...props }) => (
   <EditableContext.Provider value={form}>
@@ -120,11 +88,46 @@ class EditableCell extends React.Component {
   }
 };
 
+// Use the template of Ant Design to implement a form inside modal
+const SubmitForm = Form.create({ name: 'submit_form' })(
+  class extends React.Component {
+    render() {
+      const { visible, onCancel, onCreate, form } = this.props;
+      const { getFieldDecorator } = form;
+      return (
+        <Modal
+          visible={visible}
+          title="Create a new todo item"
+          okText="Create"
+          cancelText="Cancel"
+          onCancel={onCancel}
+          onOk={onCreate}
+        >
+          <Form layout="vertical">
+            <Form.Item label="Time">
+              {getFieldDecorator('ts', {
+                rules: [{ required: true }],
+                initialValue: new Date().toLocaleString(),
+              })(<Input />)}
+            </Form.Item>
+            <Form.Item label="Description">
+              {getFieldDecorator('comment', {
+                rules: [{ required: true }],
+              })(<Input />)}
+            </Form.Item>
+          </Form>
+        </Modal>
+      );
+    }
+  },
+);
 
 class TodoItems extends React.Component {
   
   constructor(props) {
     super(props);
+    // Description of table columns
+    // The last column will be rendered as a "Delete" hyperlink associated with a pop-up confirmation box
     this.columns = [
       {
         title: 'Time',
@@ -149,28 +152,35 @@ class TodoItems extends React.Component {
       },
     ];
 
+    // Use state for data binding
     this.state = {
       dataSource: [],
       isVisible: false,
     };
   }
 
+  // When the component is mounted, request for all records
   componentDidMount() {
     this.handleGet();
   };
 
+  // Control the display of "Add item" modal
   showModal = () => {
     this.setState({ isVisible: true });
   };
 
+  // Control the display of "Add item" modal
   handleCancel = () => {
     this.setState({ isVisible: false });
   };
 
+  // Save the reference of form inside modal
+  // Therefore this component can get the values from that child component
   saveFormRef = formRef => {
     this.formRef = formRef;
   };
 
+  // Parse the format of response JSON
   parseRecord = record => {
     return {
       key: record.id,
@@ -179,9 +189,11 @@ class TodoItems extends React.Component {
     }
   }
 
+  // Initiate GET request for all the records
   handleGet = () => {
     let res = axios.get("http://18.222.111.201:8888/todo_items")
       .then(res => {
+        // Set this.state to update DOM
         this.setState({
           dataSource: res.data.result.res.map(this.parseRecord)
         });
@@ -191,6 +203,7 @@ class TodoItems extends React.Component {
       }) 
   }
 
+  // When "Create" is clicked...
   handleCreate = () => {
     const { form } = this.formRef.props;
     form.validateFields((err, values) => {
@@ -198,8 +211,7 @@ class TodoItems extends React.Component {
         return;
       }
 
-      console.log(values)
-
+      // Initiate POST request to add new record
       let res = axios.post("http://18.222.111.201:8888/todo_items", {
         data: {
           "comment": values.comment,
@@ -207,6 +219,7 @@ class TodoItems extends React.Component {
         }
       })
         .then(res => {
+          // Set this.state to update DOM
           this.state.dataSource.push({
             key: this.state.dataSource[this.state.dataSource.length - 1].key + 1,
             ...values
@@ -219,6 +232,7 @@ class TodoItems extends React.Component {
           message.error('Add error');
         }) 
         .finally(() => {
+          // Hide the pop-up modal, clear all the values in inputs
           form.resetFields();
           this.setState({ 
             isVisible: false 
@@ -227,13 +241,16 @@ class TodoItems extends React.Component {
     });
   };
 
+  // When "Delete" is clicked...
   handleDelete = key => {
+    // Initiate DELETE request to delete a record
     let res = axios.delete("http://18.222.111.201:8888/todo_items", {
       data: {
         "id": key
       }
     })
       .then(res => {
+        // Set this.state to update DOM
         this.setState({ 
           dataSource: this.state.dataSource.filter(item => item.key !== key) 
         });      
@@ -243,10 +260,13 @@ class TodoItems extends React.Component {
       }) 
   };
 
+  // When the content of table changes...
   handleUpdate = row => {
+    // Find which row is changed
     const index = this.state.dataSource.findIndex(item => row.key === item.key);
     const item = this.state.dataSource[index];
     
+    // Initiate PUT request to update corresponding record
     let res = axios.put("http://18.222.111.201:8888/todo_items", {
       data: {
         "id": row.key, 
@@ -255,6 +275,7 @@ class TodoItems extends React.Component {
       }
     })
       .then(res => {
+        // Set this.state to update DOM
         this.state.dataSource[index] = row
         this.setState({ 
           dataSource: this.state.dataSource 
@@ -273,6 +294,8 @@ class TodoItems extends React.Component {
         cell: EditableCell,
       },
     };
+    // Set up editable attribute to all the cells under editable column
+    // Register handler for the event when cell's value updates
     const columns = this.columns.map(col => {
       if (!col.editable) {
         return col;
@@ -288,6 +311,8 @@ class TodoItems extends React.Component {
         }),
       };
     });
+
+    // Render DOM
     return (
       <div>
         <Button onClick={this.showModal} type="primary" style={{ marginBottom: 16 }}>
