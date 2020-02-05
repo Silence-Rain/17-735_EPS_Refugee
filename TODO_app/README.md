@@ -18,6 +18,11 @@ The template of frontend comes from `npx create-react-app my-app --typescript`
 
 Modifications are only made in `APP.tsx` and `components/`
 
+#### Setup
+
+- Install dependencies: `npm i`
+- Run the frontend project locally: `npm start`
+
 ## Backend
 
 #### Background
