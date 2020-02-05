@@ -1,5 +1,23 @@
 # README for TODO-app
 
+## How to use
+
+URL: http://18.222.111.201/
+
+Create item: click "Add a todo item", fill in item's detail in the pop-up modal. and click "Create"
+
+Read items: whenever the page is loaded
+
+Update item: click the field you want to modify, finish modification in the input, and press "Enter" or just click somewhere else
+
+Delete item: click "Delete" at the end of selected record, then click "OK" in the pop-up confirmation box
+
+## Frontend
+
+The template of frontend comes from `npx create-react-app my-app --typescript`
+
+Modifications are only made in `APP.tsx` and `components/`
+
 ## Backend
 
 #### Background
