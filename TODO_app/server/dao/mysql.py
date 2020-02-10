@@ -3,7 +3,7 @@ import pymysql
 # Wrapper of MySQL operations
 class MySQL(object):
 	# Constructor, initiate database connection
-	def __init__(self, host, user, passwd, db, port=3306, charset='utf8'):
+	def __init__(self, host, user, passwd, db, port=3306, charset='utf8mb4'):
 		self.host = host
 		self.user = user
 		self.passwd = passwd
