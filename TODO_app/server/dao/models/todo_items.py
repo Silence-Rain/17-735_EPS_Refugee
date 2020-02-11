@@ -4,13 +4,13 @@ class TodoItemsModel(object):
 		self.db = db
 
 	# Return parsed result set of SELECT query
-	async def get_username(self):
-		rs = await self.db.query("SELECT * FROM todo_items;")
+	async def get_username(self, username):
+		rs = await self.db.query("SELECT * FROM todo_items WHERE username='%s' ;" % username)
 		return [{"id": i[0], "ts": i[1], "comment": i[2]} for i in rs]
 
 	# Return number of affected rows of INSERT query
-	async def create_item(self, ts, comment):
-		nr = await self.db.execute("INSERT INTO todo_items (`ts`, `comment`) VALUES (%s, '%s');" % (ts, comment))
+	async def create_item(self, ts, comment, username):
+		nr = await self.db.execute("INSERT INTO todo_items (`ts`, `comment`, 'username') VALUES (%s, '%s', '%s');" % (ts, comment, username))
 		return nr
 
 	# Return number of affected rows of UPDATE query

@@ -1,4 +1,5 @@
 from .models.todo_items import TodoItemsModel
+from .models.user import UserEntryModel
 
 # Aggregation of models
 # This object will be injected into Tornado web application (in app.py), 

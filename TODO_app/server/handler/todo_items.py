@@ -5,20 +5,19 @@ import routes
 class TodoItemsHandler(BaseHandler):
 
 	# Handle GET request (Read records)
-	async def get(self):
+	async def get(self,username):
 		# Return all records from database
-		res = await self.db.todo.get_items()
-		self.set_cookie("user_token", "token")
+		res = await self.db.todo.get_items(username)
 		self.finish_success(result={"res": res})
 
 	# Handle POST request (Create records)
-	async def post(self):
+	async def post(self, username):
 		# Parse arguments
 		args = self.get_argument("data")
 		ts, comment = args["ts"], args["comment"]
 		
 		# Create a new record based on given arguments
-		nr = await self.db.todo.create_item(ts, comment)
+		nr = await self.db.todo.create_item(ts, comment, username)
 		if nr:
 			# Success if the number of affected row is not 0
 			self.finish_success(result={"res": "ok"})
