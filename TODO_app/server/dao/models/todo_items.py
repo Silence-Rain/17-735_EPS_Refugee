@@ -4,7 +4,7 @@ class TodoItemsModel(object):
 		self.db = db
 
 	# Return parsed result set of SELECT query
-	async def get_items(self):
+	async def get_username(self):
 		rs = await self.db.query("SELECT * FROM todo_items;")
 		return [{"id": i[0], "ts": i[1], "comment": i[2]} for i in rs]
 

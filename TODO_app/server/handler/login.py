@@ -10,7 +10,7 @@ class LoginHandler(BaseHandler):
 		#TODO: set_secure_cookie
 		username = self.get_argument("username")
 		password = self.get_argument("password")
-		user = self.application.syncdb['user_table'].find_one({'username': username})
+		user = await self.db.user.get_user_entry()
 
 		if user and user['password'] == password:
 			self.set_cookie("username", tornado.escape.json_encode(username))
@@ -27,8 +27,8 @@ class RegisterHandler(BaseHandler):
         username = self.get_argument("username")
 		password = self.get_argument("password")
 
-        already_taken = self.application.syncdb['user_table'].find_one({'username': username})
-        if already_taken:
+        user = await self.db.user.get_user_entry()
+        if user:
 			self.finish_err(500, result={"res": "err"})
 
         user = {}
