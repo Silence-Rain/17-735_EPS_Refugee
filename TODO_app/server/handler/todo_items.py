@@ -8,6 +8,7 @@ class TodoItemsHandler(BaseHandler):
 	async def get(self):
 		# Return all records from database
 		res = await self.db.todo.get_items()
+		self.set_cookie("user_token", "token")
 		self.finish_success(result={"res": res})
 
 	# Handle POST request (Create records)

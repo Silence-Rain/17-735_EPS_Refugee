@@ -28,9 +28,10 @@ class BaseHandler(RequestHandler):
 	# Set default header
 	def set_default_headers(self):
 		# Allow CORS requests from ALL domains
-		self.set_header("Access-Control-Allow-Origin", "*")
+		self.set_header("Access-Control-Allow-Origin", "http://localhost:3000")
 		self.set_header("Access-Control-Allow-Headers", "Content-Type")
 		self.set_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT, DELETE')
+		self.set_header("Access-Control-Allow-Credentials", "true")
 
 	# Handler of successful response
 	def finish_success(self, **kwargs):
