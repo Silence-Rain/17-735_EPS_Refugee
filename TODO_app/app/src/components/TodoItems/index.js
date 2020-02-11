@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { Table, Input, Button, Popconfirm, Form, message, Modal } from 'antd';
+import { Table, Input, Button, Popconfirm, Form, message, Modal, Icon } from 'antd';
 
 // Use the template of Ant Design to implement an editable table
 const EditableContext = React.createContext();
@@ -122,6 +122,82 @@ const SubmitForm = Form.create({ name: 'submit_form' })(
   },
 );
 
+
+class LoginForm extends React.Component {
+  constructor(props) {
+    super(props);
+    // Use state for data binding
+    this.state = {
+      isLogin: true,
+    };
+  }
+
+  handleSubmit = e => {
+    e.preventDefault();
+    this.props.handleLogin("daniel")
+    // this.props.form.validateFields((err, values) => {
+    //   if (!err) {
+    //     let res = axios.post(this.state.isLogin ? "http://localhost:8888/login" : "http://localhost:8888/register", {
+    //       data: {
+    //         "username": values.username,
+    //         "password": values.password,
+    //       },
+    //     })
+    //       .then(res => {
+    //         this.props.handleLogin(values.username)
+    //       })
+    //       .catch(() => {
+    //         message.error(this.state.isLogin ? 'Login error': "Register error");
+    //       })
+    //   }
+    // });
+  };
+
+  switch = () => {
+    this.setState({
+      isLogin: !this.state.isLogin
+    })
+  }
+
+  render() {
+    const { getFieldDecorator } = this.props.form;
+    return (
+      <Form onSubmit={this.handleSubmit} className="login-form">
+        <Form.Item>
+          {getFieldDecorator('username', {
+            rules: [{ required: true, message: 'Please input your username!' }],
+          })(
+            <Input
+              prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+              placeholder="Username"
+            />,
+          )}
+        </Form.Item>
+        <Form.Item>
+          {getFieldDecorator('password', {
+            rules: [{ required: true, message: 'Please input your Password!' }],
+          })(
+            <Input
+              prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+              type="password"
+              placeholder="Password"
+            />,
+          )}
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" htmlType="submit" className="login-form-button">
+            { this.state.isLogin ? "Log in" : "Register" }
+          </Button>
+          <a style={{marginLeft: 10}} onClick={this.switch}>{ this.state.isLogin ? "Register" : "Log in" } now!</a>
+        </Form.Item>
+      </Form>
+    );
+  }
+}
+
+const Login = Form.create({ name: 'login' })(LoginForm);
+
+
 class TodoItems extends React.Component {
   
   constructor(props) {
@@ -156,6 +232,7 @@ class TodoItems extends React.Component {
     this.state = {
       dataSource: [],
       isVisible: false,
+      username: null
     };
   }
 
@@ -200,9 +277,6 @@ class TodoItems extends React.Component {
   // Initiate GET request for all the records
   handleGet = () => {
     let res = this.api().get("/todo_items")
-    // let res = axios.get("http://18.222.111.201:8888/todo_items", {
-    //   withCredentials: true,
-    // })
       .then(res => {
         // Set this.state to update DOM
         this.setState({
@@ -297,6 +371,25 @@ class TodoItems extends React.Component {
       }) 
   };
 
+  handleLogin = username => {
+    this.setState({
+      username: username
+    })
+  };
+
+  handleLogout = () => {
+    let res = this.api().post("/logout")
+      .then(res => {
+        this.setState({
+          username: null
+        })
+      })
+      .catch(res => {
+        message.error("Logout error")
+      })
+    
+  }
+
   render() {
     const { dataSource } = this.state;
     const components = {
@@ -324,26 +417,37 @@ class TodoItems extends React.Component {
     });
 
     // Render DOM
-    return (
-      <div>
-        <Button onClick={this.showModal} type="primary" style={{ marginBottom: 16 }}>
-          Add a todo item
-        </Button>
-        <SubmitForm
-          wrappedComponentRef={this.saveFormRef}
-          visible={this.state.isVisible}
-          onCancel={this.handleCancel}
-          onCreate={this.handleCreate}
-        />
-        <Table
-          components={components}
-          rowClassName={() => 'editable-row'}
-          bordered
-          dataSource={dataSource}
-          columns={columns}
-        />
-      </div>
-    );
+    if (this.state.username) {
+      return (
+        <div>
+          Hi, {this.state.username}, <a onClick={this.handleLogout} style={{ marginRight: 16 }}>logout</a>
+          <Button onClick={this.showModal} type="primary" style={{ marginBottom: 16 }}>
+            Add a todo item
+          </Button>
+          <SubmitForm
+            wrappedComponentRef={this.saveFormRef}
+            visible={this.state.isVisible}
+            onCancel={this.handleCancel}
+            onCreate={this.handleCreate}
+          />
+          <Table
+            components={components}
+            rowClassName={() => 'editable-row'}
+            bordered
+            dataSource={dataSource}
+            columns={columns}
+          />
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <div style={{ width: "50%", marginLeft: "25%", marginTop: 20 }} >
+            <Login handleLogin={this.handleLogin.bind(this)}/>
+          </div>
+        </div>
+      );
+    } 
   }
 }
 

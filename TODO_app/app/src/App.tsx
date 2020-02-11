@@ -15,7 +15,7 @@ const App = () => {
           <p>TODO ITEMS <span style={{marginLeft: '10px', fontSize: '18px'}}>by Refugee Group</span></p>
         </Header>
         <Content style={{ padding: '10px 50px' }}>
-          <TodoItems />
+          <TodoItems/>
         </Content>
       </Layout>
     </div>
