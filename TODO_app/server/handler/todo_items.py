@@ -1,9 +1,10 @@
 from handler.base import BaseHandler
 import routes
+import tornado
 
 # Handler of "/todo_items" API
 class TodoItemsHandler(BaseHandler):
-
+	@tornado.web.authenticated
 	# Handle GET request (Read records)
 	async def get(self,username):
 		# Return all records from database
