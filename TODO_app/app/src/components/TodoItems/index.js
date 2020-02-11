@@ -187,11 +187,22 @@ class TodoItems extends React.Component {
       ts: new Date(record.ts).toLocaleString(),
       comment: record.comment,
     }
-  }
+  };
+
+  // API calling wrapper
+  api = () => {
+    return axios.create({
+      baseURL: 'http://localhost:8888/',
+      withCredentials: true,
+    })
+  };
 
   // Initiate GET request for all the records
   handleGet = () => {
-    let res = axios.get("http://18.222.111.201:8888/todo_items")
+    let res = this.api().get("/todo_items")
+    // let res = axios.get("http://18.222.111.201:8888/todo_items", {
+    //   withCredentials: true,
+    // })
       .then(res => {
         // Set this.state to update DOM
         this.setState({
@@ -212,11 +223,11 @@ class TodoItems extends React.Component {
       }
 
       // Initiate POST request to add new record
-      let res = axios.post("http://18.222.111.201:8888/todo_items", {
+      let res = this.api().post("/todo_items", {
         data: {
           "comment": values.comment,
           "ts": new Date(values.ts).getTime(),
-        }
+        },
       })
         .then(res => {
           // Set this.state to update DOM
@@ -244,10 +255,10 @@ class TodoItems extends React.Component {
   // When "Delete" is clicked...
   handleDelete = key => {
     // Initiate DELETE request to delete a record
-    let res = axios.delete("http://18.222.111.201:8888/todo_items", {
+    let res = this.api().delete("/todo_items", {
       data: {
         "id": key
-      }
+      },
     })
       .then(res => {
         // Set this.state to update DOM
@@ -267,12 +278,12 @@ class TodoItems extends React.Component {
     const item = this.state.dataSource[index];
     
     // Initiate PUT request to update corresponding record
-    let res = axios.put("http://18.222.111.201:8888/todo_items", {
+    let res = this.api().put("/todo_items", {
       data: {
         "id": row.key, 
         "comment": row.comment,
         "ts": new Date(row.ts).getTime(),
-      }
+      },
     })
       .then(res => {
         // Set this.state to update DOM
