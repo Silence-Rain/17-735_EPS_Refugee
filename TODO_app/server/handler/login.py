@@ -9,8 +9,8 @@ class LoginHandler(BaseHandler):
 	async def post(self):
 		# Parse arguments
 		#TODO: set_secure_cookie
-		username = self.get_argument("username")
-		password = self.get_argument("password")
+		args = self.get_argument("data")
+		username, password = args["username"], args["password"]
 		user = await self.db.user.get_user_entry(username)
 
 		if user and user[0]['password'] == password:
@@ -25,8 +25,8 @@ class RegisterHandler(BaseHandler):
 
 	# Handle POST request
 	async def post(self):
-		username = self.get_argument("username")
-		password = self.get_argument("password")
+		args = self.get_argument("data")
+		username, password = args["username"], args["password"]
 
 		user = await self.db.user.get_user_entry(username)
 		if user:
@@ -36,9 +36,12 @@ class RegisterHandler(BaseHandler):
 		user['username'] = username
 		user['password'] = password
 
-		self.db.user.save_user_entry(username, password)
-		self.set_cookie("username", tornado.escape.json_encode(username))
-		self.finish_success(result={"res": "ok"})
+		rs = await self.db.user.save_user_entry(username, password)
+		if rs:
+			self.set_cookie("username", tornado.escape.json_encode(username))
+			self.finish_success(result={"res": "ok"})
+		else:
+			self.finish_err(500, result={"res": "err"})
 
 # Handler of "/todo_items" API
 class LogoutHandler(BaseHandler):

@@ -6,16 +6,19 @@ import tornado
 class TodoItemsHandler(BaseHandler):
 	@tornado.web.authenticated
 	# Handle GET request (Read records)
-	async def get(self,username):
+	async def get(self):
+		# Parse arguments
+		username = self.get_argument("username")
+
 		# Return all records from database
 		res = await self.db.todo.get_items(username)
 		self.finish_success(result={"res": res})
 
 	# Handle POST request (Create records)
-	async def post(self, username):
+	async def post(self):
 		# Parse arguments
 		args = self.get_argument("data")
-		ts, comment = args["ts"], args["comment"]
+		ts, comment, username = args["ts"], args["comment"], args["username"]
 		
 		# Create a new record based on given arguments
 		nr = await self.db.todo.create_item(ts, comment, username)

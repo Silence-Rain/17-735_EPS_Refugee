@@ -23,12 +23,17 @@ db = MySQL(
 		db=DB_DB
 	)
 
+settings = {
+	"login_url": "/login",
+}
+
 # Create and configure a tornado web server
 application = tornado.web.Application(
 		handlers=routes.handlers,
 		db=Database(db),
 		TEST=options.TEST,
 		autoreload=True,
+		**settings
 	)
 
 if __name__ == '__main__':

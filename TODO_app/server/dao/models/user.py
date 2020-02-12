@@ -8,5 +8,5 @@ class UserEntryModel(object):
 		return [{"username": i[0], "password": i[1]} for i in rs]
 	
 	async def save_user_entry(self, username, password):
-		rs = await self.db.execute("INSERT INTO user_table (`username`, `password`) VALUES (%s, '%s');" % (username, password))
+		rs = await self.db.execute("INSERT INTO user_table (`username`, `password`) VALUES ('%s', '%s');" % (username, password))
 		return rs

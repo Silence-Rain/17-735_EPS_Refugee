@@ -134,23 +134,22 @@ class LoginForm extends React.Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    this.props.handleLogin("daniel")
-    // this.props.form.validateFields((err, values) => {
-    //   if (!err) {
-    //     let res = axios.post(this.state.isLogin ? "http://localhost:8888/login" : "http://localhost:8888/register", {
-    //       data: {
-    //         "username": values.username,
-    //         "password": values.password,
-    //       },
-    //     })
-    //       .then(res => {
-    //         this.props.handleLogin(values.username)
-    //       })
-    //       .catch(() => {
-    //         message.error(this.state.isLogin ? 'Login error': "Register error");
-    //       })
-    //   }
-    // });
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        let res = axios.post(this.state.isLogin ? "http://localhost:8888/login" : "http://localhost:8888/register", {
+          data: {
+            "username": values.username,
+            "password": values.password,
+          },
+        })
+          .then(res => {
+            this.props.handleLogin(values.username)
+          })
+          .catch(() => {
+            message.error(this.state.isLogin ? 'Login error': "Register error");
+          })
+      }
+    });
   };
 
   switch = () => {
@@ -238,7 +237,7 @@ class TodoItems extends React.Component {
 
   // When the component is mounted, request for all records
   componentDidMount() {
-    this.handleGet();
+    // this.handleGet();
   };
 
   // Control the display of "Add item" modal
@@ -276,7 +275,11 @@ class TodoItems extends React.Component {
 
   // Initiate GET request for all the records
   handleGet = () => {
-    let res = this.api().get("/todo_items")
+    let res = this.api().get("/todo_items", {
+      params: {
+        "username": this.state.username,
+      }
+    })
       .then(res => {
         // Set this.state to update DOM
         this.setState({
@@ -301,6 +304,7 @@ class TodoItems extends React.Component {
         data: {
           "comment": values.comment,
           "ts": new Date(values.ts).getTime(),
+          "username": this.state.username,
         },
       })
         .then(res => {
@@ -375,6 +379,7 @@ class TodoItems extends React.Component {
     this.setState({
       username: username
     })
+    this.handleGet();
   };
 
   handleLogout = () => {
@@ -386,8 +391,7 @@ class TodoItems extends React.Component {
       })
       .catch(res => {
         message.error("Logout error")
-      })
-    
+      })   
   }
 
   render() {
@@ -443,7 +447,7 @@ class TodoItems extends React.Component {
       return (
         <div>
           <div style={{ width: "50%", marginLeft: "25%", marginTop: 20 }} >
-            <Login handleLogin={this.handleLogin.bind(this)}/>
+            <Login handleLogin={this.handleLogin.bind(this)} handleLoad={this.handleGet.bind(this)}/>
           </div>
         </div>
       );
