@@ -1,5 +1,7 @@
 # README for TODO-app
 
+**Now supports emoji!!!**
+
 ## How to use
 
 URL: http://18.222.111.201/
@@ -11,6 +13,19 @@ Read items: whenever the page is loaded
 Update item: click the field you want to modify, finish modification in the input, and press "Enter" or just click somewhere else
 
 Delete item: click "Delete" at the end of selected record, then click "OK" in the pop-up confirmation box
+
+## Auth
+
+Use HTTP Headers to perform identity check. Server maintains a list of logged-in users
+
+Current users:
+
+| username | password |
+| -------- | -------- |
+| user1    | pwd      |
+| user2    | pwd2     |
+
+
 
 ## Frontend
 
