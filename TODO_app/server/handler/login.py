@@ -5,11 +5,18 @@ import tornado
 # Handler of "/todo_items" API
 class LoginHandler(BaseHandler):
 
+	async def get(self):
+		self.write('<html><body><form action="/login" method="post">'
+                   'Username: <input type="text" name="username">'
+                   'Password: <input type="text" name="password">'
+                   '<input type="submit" value="Sign in">'
+                   '</form></body></html>')
+
 	# Handle POST request
 	async def post(self):
 		# Parse arguments
-		args = self.get_argument("data")
-		username, password = args["username"], args["password"]
+		username = self.get_body_argument("username") 
+		password = self.get_body_argument("password")
 		user = await self.db.user.get_user_entry(username)
 
 		if user and user[0]['password'] == password:
