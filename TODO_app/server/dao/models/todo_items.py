@@ -11,7 +11,13 @@ class TodoItemsModel(object):
 	# Return number of affected rows of INSERT query
 	async def create_item(self, ts, comment, username):
 		nr = await self.db.execute("INSERT INTO todo_items (`ts`, `comment`, `username`) VALUES (%s, '%s', '%s');" % (ts, comment, username))
-		return nr
+		
+		# If INSERT is success, return the record instead
+		if nr:
+			rs = await self.db.get("SELECT * FROM todo_items WHERE username='%s' ;" % username)
+			return {"id": rs[0], "ts": rs[1], "comment": rs[2]}
+		else:
+			return nr
 
 	# Return number of affected rows of UPDATE query
 	async def update_item(self, id, ts, comment):

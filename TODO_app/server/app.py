@@ -23,15 +23,20 @@ db = MySQL(
 		db=DB_DB
 	)
 
+# List of logged-in users
+login_list = []
+
+# Additional settings
 settings = {
-	"login_url": "/login",
-	"cookie_secret": "hahahaha"
+# 	"login_url": "/login",
+# 	"cookie_secret": "hahahaha"
 }
 
 # Create and configure a tornado web server
 application = tornado.web.Application(
 		handlers=routes.handlers,
 		db=Database(db),
+		login_list=login_list,
 		TEST=options.TEST,
 		autoreload=True,
 		**settings

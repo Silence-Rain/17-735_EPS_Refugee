@@ -11,6 +11,11 @@ class BaseHandler(RequestHandler):
 	def db(self):
 		return self.settings["db"]
 
+	# Injected logged-in users list
+	@property
+	def login_list(self):
+		return self.settings["login_list"]
+
 	# JSON parser
 	@property
 	def json_body(self):
@@ -28,8 +33,8 @@ class BaseHandler(RequestHandler):
 	# Set default header
 	def set_default_headers(self):
 		# Allow CORS requests from ALL domains
-		self.set_header("Access-Control-Allow-Origin", "http://localhost:3002")
-		self.set_header("Access-Control-Allow-Headers", "Content-Type")
+		self.set_header("Access-Control-Allow-Origin", "*")
+		self.set_header("Access-Control-Allow-Headers", "Content-Type, Username")
 		self.set_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT, DELETE')
 		self.set_header("Access-Control-Allow-Credentials", "true")
 
@@ -69,9 +74,8 @@ class BaseHandler(RequestHandler):
 		else:
 			return super(BaseHandler, self).get_argument(name, default, strip)
 
+	# Validate header for logged-in user
 	def get_current_user(self):
-		return self.get_cookie("username")
-
-
+		return self.request.headers.get("Username")
 
 			
