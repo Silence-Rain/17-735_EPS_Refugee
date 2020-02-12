@@ -4,9 +4,14 @@ import tornado
 
 # Handler of "/todo_items" API
 class TodoItemsHandler(BaseHandler):
-	@tornado.web.authenticated
+	# @tornado.web.authenticated
 	# Handle GET request (Read records)
 	async def get(self):
+		user = self.get_current_user()
+		if user == None:
+			self.set_status(403)
+			self.finish()
+			return
 		# Parse arguments
 		username = self.get_argument("username")
 

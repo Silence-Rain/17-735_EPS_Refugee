@@ -69,4 +69,9 @@ class BaseHandler(RequestHandler):
 		else:
 			return super(BaseHandler, self).get_argument(name, default, strip)
 
+	def get_current_user(self):
+		return self.get_cookie("username")
+
+
+
 			

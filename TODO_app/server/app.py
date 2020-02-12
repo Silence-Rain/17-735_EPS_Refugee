@@ -25,6 +25,7 @@ db = MySQL(
 
 settings = {
 	"login_url": "/login",
+	"cookie_secret": "hahahaha"
 }
 
 # Create and configure a tornado web server
