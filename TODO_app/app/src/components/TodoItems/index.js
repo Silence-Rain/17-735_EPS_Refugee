@@ -137,7 +137,7 @@ class LoginForm extends React.Component {
     // Initiate login or register request according to status
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        let res = axios.post(this.state.isLogin ? "http://localhost:8888/login" : "http://localhost:8888/register", {
+        let res = axios.post(this.state.isLogin ? "http://18.222.111.201:8888/login" : "http://18.222.111.201:8888/register", {
           data: {
             "username": values.username,
             "password": values.password,
@@ -272,7 +272,7 @@ class TodoItems extends React.Component {
   // API calling wrapper
   api = () => {
     return axios.create({
-      baseURL: 'http://localhost:8888/',
+      baseURL: 'http://18.222.111.201:8888/',
       headers: {'Username': this.state.username},
       // withCredentials: true,
     })
@@ -314,7 +314,6 @@ class TodoItems extends React.Component {
       })
         .then(res => {
           // Set this.state to update DOM
-          console.log(res.data.result.res)
           this.state.dataSource.push(this.parseRecord(res.data.result.res))
           this.setState({ 
             dataSource: this.state.dataSource 

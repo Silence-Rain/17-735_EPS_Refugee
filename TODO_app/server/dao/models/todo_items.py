@@ -14,7 +14,7 @@ class TodoItemsModel(object):
 		
 		# If INSERT is success, return the record instead
 		if nr:
-			rs = await self.db.get("SELECT * FROM todo_items WHERE username='%s' ;" % username)
+			rs = await self.db.get("SELECT * FROM todo_items WHERE id = (SELECT max(id) FROM todo_items WHERE username='%s') ;" % username)
 			return {"id": rs[0], "ts": rs[1], "comment": rs[2]}
 		else:
 			return nr
