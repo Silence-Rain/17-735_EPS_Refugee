@@ -1,3 +1,8 @@
+'''This code handles the backed of how authentication and registration is handled.
+The registration handlers takes care of the post requests and checks if an entry with the submitted username exists. If not, it creates a new entry and saves in the database. It then logs the user in by setting a header and adding the user to a logged in list(cookies are ideal which is how we might do it in the final project but there was some confusion regarding cookies with the frontend so headers are used temporarily)
+The LoginHandler authenticates a user by checking the id and password, sets the header and adds the user to the logged in list. The password will not be stored in plain text in the final project but for the sake of todo, we have done it that way. We will use a hashed password for the final project.
+Finally, the logout handler removes the username from the logged in list'''
+
 from handler.base import BaseHandler
 import routes
 import tornado
