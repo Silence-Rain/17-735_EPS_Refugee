@@ -134,6 +134,7 @@ class LoginForm extends React.Component {
 
   handleSubmit = e => {
     e.preventDefault();
+    // Initiate login or register request according to status
     this.props.form.validateFields((err, values) => {
       if (!err) {
         let res = axios.post(this.state.isLogin ? "http://localhost:8888/login" : "http://localhost:8888/register", {
@@ -141,6 +142,7 @@ class LoginForm extends React.Component {
             "username": values.username,
             "password": values.password,
           },
+          // withCredentials: true,
         })
           .then(res => {
             this.props.handleLogin(values.username)
@@ -152,12 +154,14 @@ class LoginForm extends React.Component {
     });
   };
 
+  // Switch between Login and Register
   switch = () => {
     this.setState({
       isLogin: !this.state.isLogin
     })
-  }
+  };
 
+  // Render DOM
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
@@ -269,7 +273,8 @@ class TodoItems extends React.Component {
   api = () => {
     return axios.create({
       baseURL: 'http://localhost:8888/',
-      withCredentials: true,
+      headers: {'Username': this.state.username},
+      // withCredentials: true,
     })
   };
 
@@ -309,10 +314,8 @@ class TodoItems extends React.Component {
       })
         .then(res => {
           // Set this.state to update DOM
-          this.state.dataSource.push({
-            key: this.state.dataSource[this.state.dataSource.length - 1].key + 1,
-            ...values
-          })
+          console.log(res.data.result.res)
+          this.state.dataSource.push(this.parseRecord(res.data.result.res))
           this.setState({ 
             dataSource: this.state.dataSource 
           });    
@@ -354,27 +357,31 @@ class TodoItems extends React.Component {
     // Find which row is changed
     const index = this.state.dataSource.findIndex(item => row.key === item.key);
     const item = this.state.dataSource[index];
-    
-    // Initiate PUT request to update corresponding record
-    let res = this.api().put("/todo_items", {
-      data: {
-        "id": row.key, 
-        "comment": row.comment,
-        "ts": new Date(row.ts).getTime(),
-      },
-    })
-      .then(res => {
-        // Set this.state to update DOM
-        this.state.dataSource[index] = row
-        this.setState({ 
-          dataSource: this.state.dataSource 
-        });     
+
+    // Only request if field changes
+    if (JSON.stringify(item) != JSON.stringify(row)) {
+      // Initiate PUT request to update corresponding record
+      let res = this.api().put("/todo_items", {
+        data: {
+          "id": row.key, 
+          "comment": row.comment,
+          "ts": new Date(row.ts).getTime(),
+        },
       })
-      .catch(() => {
-        message.error('Update error');
-      }) 
+        .then(res => {
+          // Set this.state to update DOM
+          this.state.dataSource[index] = row
+          this.setState({ 
+            dataSource: this.state.dataSource 
+          });     
+        })
+        .catch(() => {
+          message.error('Update error');
+        }) 
+    }
   };
 
+  // When user login success...
   handleLogin = username => {
     this.setState({
       username: username
@@ -382,12 +389,17 @@ class TodoItems extends React.Component {
     this.handleGet();
   };
 
+  // When user logout...
   handleLogout = () => {
-    let res = this.api().post("/logout")
+    let res = this.api().post("/logout", {
+      data: {
+        "username": this.state.username
+      }
+    })
       .then(res => {
         this.setState({
           username: null
-        })
+        }) 
       })
       .catch(res => {
         message.error("Logout error")

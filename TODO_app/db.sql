@@ -19,13 +19,26 @@
 -- Current Database: `eps_todo`
 --
 
-CREATE DATABASE /*!32312 IF NOT EXISTS*/ `eps_todo` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci */;
+CREATE DATABASE IF NOT EXISTS `eps_todo` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 USE `eps_todo`;
 
---
--- Table structure for table `todo_items`
---
+
+DROP TABLE IF EXISTS `user_table`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `user_table` (
+  `username` varchar(64) NOT NULL,
+  `password` varchar(64) DEFAULT NULL,
+  PRIMARY KEY (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+-- LOCK TABLES `user_table` WRITE;
+/*!40000 ALTER TABLE `todo_items` DISABLE KEYS */;
+INSERT INTO `user_table` VALUES ('user1','pwd1'),('user2','pwd2');
+/*!40000 ALTER TABLE `todo_items` ENABLE KEYS */;
+-- UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `todo_items`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -35,43 +48,20 @@ CREATE TABLE `todo_items` (
   `ts` bigint NOT NULL,
   `comment` varchar(255) DEFAULT NULL,
   `username` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`),
-  FOREIGN KEY (`username`)
-  	 REFERENCES user_table(`username`)
-  	 ON DELETE CASCADE
+  PRIMARY KEY (`id`)
+  -- FOREIGN KEY (`username`)
+  --    REFERENCES user_table(`username`)
+  --    ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `todo_items`
---
-
 -- LOCK TABLES `todo_items` WRITE;
 /*!40000 ALTER TABLE `todo_items` DISABLE KEYS */;
-INSERT INTO `todo_items` VALUES (1,1500000000000,'do hw1','user1'),(2,1580508000000,'go to','user2');
+INSERT INTO `todo_items` VALUES (1,1500000000000,'do hw1','user1'),(2,1580508000000,'go to bed','user2');
 /*!40000 ALTER TABLE `todo_items` ENABLE KEYS */;
 -- UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
-DROP TABLE IF EXISTS `user_table`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `user_table` (
-  `username` varchar(255) NOT NULL,
-  `password` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `todo_items`
---
-
--- LOCK TABLES `user_table` WRITE;
-/*!40000 ALTER TABLE `todo_items` DISABLE KEYS */;
-INSERT INTO `user_table` VALUES ('user1','pwd'),('user2','pwd2');
-/*!40000 ALTER TABLE `todo_items` ENABLE KEYS */;
--- UNLOCK TABLES;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
