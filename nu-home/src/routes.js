@@ -7,6 +7,7 @@ import {
 import Index from './components/Index';
 import Login from './components/Login';
 import Register from './components/Register';
+import RegisterNGO from './components/RegisterNGO';
 import Forum from './components/Forum';
 import DirectMessage from './components/DirectMessage';
 import RefugeeStatus from './components/RefugeeStatus';
@@ -45,6 +46,7 @@ const MainRouter = () => {
       </Route>
       <Route exact path='/login' component={Login} />
       <Route exact path='/register' component={Register} />
+      <Route exact path='/register_ngo' component={RegisterNGO} />
       <Route path='/home' component={Index}>
 
       </Route>
