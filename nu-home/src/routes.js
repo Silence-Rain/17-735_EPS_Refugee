@@ -47,9 +47,7 @@ const MainRouter = () => {
       <Route exact path='/login' component={Login} />
       <Route exact path='/register' component={Register} />
       <Route exact path='/register_ngo' component={RegisterNGO} />
-      <Route path='/home' component={Index}>
-
-      </Route>
+      <Route path='/home' component={Index} />
     </Switch>
   )
 }

@@ -4,8 +4,28 @@
   
 }
 
+.site-layout-content {
+  background: #fff;
+  padding: 24px;
+  min-height: 280px;
+}
+.logo {
+  height: 20px;
+  margin: 0 20px;
+  float: left;
+  color: #fff;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.settings {
+  margin: 0 20px;
+  float: right;
+  color: #fff;
+}
+
 .login-form-wrapper {
-	display: flex;
+  display: flex;
   flex-direction: column;
   vertical-align: middle;
   width: 350px;
