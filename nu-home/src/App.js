@@ -5,6 +5,7 @@ import Index from './components/Index';
 import Login from './components/Login';
 import { MainRouter } from './routes.js';
 import { DownOutlined } from '@ant-design/icons';
+import { Link } from 'react-router-dom';
 
 const { Header, Content } = Layout;
 
@@ -25,7 +26,9 @@ let showSettings = () => {};
 
 const menu = (
   <Menu>
-    <Menu.Item key="settings" onclick={showSettings}>Settings</Menu.Item>
+    <Menu.Item key="settings" onclick={showSettings}>
+      <Link to={`/home/settings`}>Settings</Link>
+    </Menu.Item>
     <Menu.Divider />
     <Menu.Item key="logout" onclick={logout} style={{ color: '#ff4d4f' }}>Logout</Menu.Item>
   </Menu>

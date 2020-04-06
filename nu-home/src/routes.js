@@ -11,6 +11,7 @@ import RegisterNGO from './components/RegisterNGO';
 import Forum from './components/Forum';
 import DirectMessage from './components/DirectMessage';
 import RefugeeStatus from './components/RefugeeStatus';
+import Settings from './components/Settings';
 
 // let isAuthenticated = true
 
@@ -65,6 +66,7 @@ const ViewRouter = (props) => {
       <Route exact path={`${props.match.path}/forum/:category`} component={Forum} />
       <Route exact path={`${props.match.path}/dm`} component={DirectMessage} />
       <Route exact path={`${props.match.path}/status`} component={RefugeeStatus} />
+      <Route exact path={`${props.match.path}/settings`} component={Settings} />
     </Switch>
   )
 }
