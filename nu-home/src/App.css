@@ -1,0 +1,17 @@
+@import '~antd/dist/antd.css';
+
+.App {
+  
+}
+
+.login-form-wrapper {
+	display: flex;
+  flex-direction: column;
+  vertical-align: middle;
+  width: 350px;
+  text-align: center;
+}
+
+.login-form {
+  padding: 20px;
+}
