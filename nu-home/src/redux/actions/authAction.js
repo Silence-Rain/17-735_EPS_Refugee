@@ -16,13 +16,11 @@ export const login = ({ username, password }) => dispatch => {
 
   setTimeout(() => {
     const payload = {
-      data: {
-        username: 'Silence',
-        type: 'admin',
-        isVerified: true,
-        avatar: 1,
-        bio: "Hello"
-      }
+      username: 'Silence',
+      type: 'admin',
+      isVerified: true,
+      avatar: 1,
+      bio: "Hello"
     };
     dispatch({
       type: "LOGIN_SUCCESS",
@@ -70,22 +68,15 @@ export const register = ({
 }) => dispatch => {
   // // Request body
   // const body = JSON.stringify({
-  //   firstName,
-  //   lastName,
-  //   username,
-  //   email,
-  //   password
   // });
 
   setTimeout(() => {
     const payload = {
-      data: {
-        username: 'test_refugee',
-        type: 'refugee',
-        isVerified: true,
-        avatar: 1,
-        bio: "Hello"
-      }
+      username: 'Silence',
+      type: 'admin',
+      isVerified: true,
+      avatar: 1,
+      bio: "Hello"
     };
     dispatch({
       type: "REGISTER_SUCCESS",

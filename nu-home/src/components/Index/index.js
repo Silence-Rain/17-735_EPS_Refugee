@@ -1,7 +1,7 @@
 import React from 'react';
 import "./index.css";
-import { Layout, Menu, Dropdown } from 'antd';
-import { AppstoreOutlined, MailOutlined, IdcardOutlined, DownOutlined ,UserAddOutlined } from '@ant-design/icons';
+import { Layout, Menu, Dropdown, Avatar, Space } from 'antd';
+import { AppstoreOutlined, MailOutlined, IdcardOutlined, DownOutlined ,UserAddOutlined, UserOutlined } from '@ant-design/icons';
 import { ViewRouter } from '../../routes.js'
 import { Link, Redirect } from 'react-router-dom';
 import store from '../../redux/store';
@@ -56,7 +56,11 @@ class Index extends React.Component {
         <Menu.Item key="user">
           <Dropdown overlay={this.state.menuDropdown}>
             <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
-              Hi, {this.state.stores.user.data.username} <DownOutlined />
+              <Space>
+                {`Hi, ${this.state.stores.user.username}`} 
+                <Avatar style={{ backgroundColor: '#87d068' }} icon={<UserOutlined />} />
+                <DownOutlined />
+              </Space>
             </a>
           </Dropdown>
         </Menu.Item>
@@ -94,7 +98,7 @@ class Index extends React.Component {
             </Menu.Item>
 
             {
-              this.state.stores.user.data.isVerified ? (
+              this.state.stores.user.isVerified ? (
                 <SubMenu
                   key="forum"
                   title={
@@ -127,7 +131,7 @@ class Index extends React.Component {
             }
 
             { 
-              this.state.stores.user.data.type !== "refugee" ? (
+              this.state.stores.user.type !== "refugee" ? (
                 <Menu.Item key="status">
                   <span>
                     <IdcardOutlined />
@@ -138,7 +142,7 @@ class Index extends React.Component {
             }
 
             { 
-              this.state.stores.user.data.type === "admin" ? (
+              this.state.stores.user.type === "admin" ? (
                 <Menu.Item key="reg_ngo">
                   <span>
                     <UserAddOutlined />
