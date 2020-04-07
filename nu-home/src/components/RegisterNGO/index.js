@@ -1,8 +1,9 @@
 import React from 'react';
-import { Form, Input, Select, Button} from 'antd';
+import { Layout, Form, Input, Select, Button} from 'antd';
 import { Link, Redirect } from 'react-router-dom';
 
 const { Option } = Select;
+const { Header, Content } = Layout;
 
 const formItemLayout = {
   labelCol: {
@@ -56,94 +57,109 @@ class RegisterNGO extends React.Component {
       return <Redirect to='/home' />
     } else {
       return (
-        <Form
-          {...formItemLayout}
-          name="register"
-          onFinish={this.onFinish}
-          scrollToFirstError
-        >
-          <Form.Item
-            name="username"
-            label="Username"
-            rules={[
-              {
-                required: true,
-                message: 'Please input your username!',
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
+        <Layout>
 
-          <Form.Item
-            name="password"
-            label="Password"
-            rules={[
-              {
-                required: true,
-                message: 'Please input your password!',
-              },
-            ]}
-            hasFeedback
-          >
-            <Input.Password />
-          </Form.Item>
+          <Header>
+            <div className="logo">
+              <p>nuHome <span style={{marginLeft: '10px', fontSize: '16px'}}>by Refugee Group</span></p>
+            </div>
+          </Header>
 
-          <Form.Item
-            name="confirm"
-            label="Confirm Password"
-            dependencies={['password']}
-            hasFeedback
-            rules={[
-              {
-                required: true,
-                message: 'Please confirm your password!',
-              },
-              ({ getFieldValue }) => ({
-                validator(rule, value) {
-                  if (!value || getFieldValue('password') === value) {
-                    return Promise.resolve();
-                  }
+          <Layout style={{ padding: '10px 50px' }}>
+            <Content>
+              <Form
+                {...formItemLayout}
+                name="register"
+                onFinish={this.onFinish}
+                scrollToFirstError
+              >
+                <Form.Item
+                  name="username"
+                  label="Username"
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Please input your username!',
+                    },
+                  ]}
+                >
+                  <Input />
+                </Form.Item>
 
-                  return Promise.reject('The two passwords that you entered do not match!');
-                },
-              }),
-            ]}
-          >
-            <Input.Password />
-          </Form.Item>
+                <Form.Item
+                  name="password"
+                  label="Password"
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Please input your password!',
+                    },
+                  ]}
+                  hasFeedback
+                >
+                  <Input.Password />
+                </Form.Item>
 
-          <Form.Item
-            name="region" 
-            label="Region" 
-            rules={[
-              { 
-                required: true,
-                message: 'Please select your region!',
-              }
-            ]}
-          >
-            <Select
-              showSearch
-            >
-              {
-                countries.length && countries.map(item => (
-                  <Option key={item} value={item}>{item}</Option>
-                )) 
-              }
-            </Select>
-          </Form.Item>
+                <Form.Item
+                  name="confirm"
+                  label="Confirm Password"
+                  dependencies={['password']}
+                  hasFeedback
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Please confirm your password!',
+                    },
+                    ({ getFieldValue }) => ({
+                      validator(rule, value) {
+                        if (!value || getFieldValue('password') === value) {
+                          return Promise.resolve();
+                        }
 
-          <Form.Item
-            {...tailFormItemLayout}
-          >
-            <Button type="primary" htmlType="submit" className="login-form-button">
-              Register
-            </Button>
-            <Link style={{marginLeft: 10}} to="/login">Back to Login</Link>
-          </Form.Item>
+                        return Promise.reject('The two passwords that you entered do not match!');
+                      },
+                    }),
+                  ]}
+                >
+                  <Input.Password />
+                </Form.Item>
 
-        </Form>
+                <Form.Item
+                  name="region" 
+                  label="Region" 
+                  rules={[
+                    { 
+                      required: true,
+                      message: 'Please select your region!',
+                    }
+                  ]}
+                >
+                  <Select
+                    showSearch
+                  >
+                    {
+                      countries.length && countries.map(item => (
+                        <Option key={item} value={item}>{item}</Option>
+                      )) 
+                    }
+                  </Select>
+                </Form.Item>
+
+                <Form.Item
+                  {...tailFormItemLayout}
+                >
+                  <Button type="primary" htmlType="submit" className="login-form-button">
+                    Register
+                  </Button>
+                  <Link style={{marginLeft: 10}} to="/login">Back to Login</Link>
+                </Form.Item>
+
+              </Form>
+
+            </Content>
+          </Layout>
+
+        </Layout>
       );
     };
   }

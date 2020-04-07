@@ -1,21 +1,79 @@
 import React from 'react';
 import "./index.css";
-import { Layout, Menu } from 'antd';
-import { AppstoreOutlined, MailOutlined, IdcardOutlined } from '@ant-design/icons';
+import { Layout, Menu, Dropdown } from 'antd';
+import { AppstoreOutlined, MailOutlined, IdcardOutlined, DownOutlined } from '@ant-design/icons';
 import { ViewRouter } from '../../routes.js'
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
+import store from '../../redux/store';
+import { logout } from '../../redux/actions/authAction';
 
 const { SubMenu } = Menu;
-const { Content, Sider } = Layout;
+const { Header, Content, Sider } = Layout;
 
 class Index extends React.Component {
-  componentDidMount () {
+  constructor (props) {
+    super(props);
+    this.state = {
+      stores: {
+        isAuthenticated: true,
+        user: {data:{username: ""}}
+      },
+      menuDropdown: (
+        <Menu>
+          <Menu.Item key="settings">
+            <Link to={`/home/settings`}>Settings</Link>
+          </Menu.Item>
+          <Menu.Divider />
+          <Menu.Item key="logout" onClick={this.handleLogout} style={{ color: '#ff4d4f' }}>Logout</Menu.Item>
+        </Menu>
+      )
+    }
+  } 
 
+  componentDidMount () {
+    this.setState({
+      stores: store.getState().auth
+    })
+    store.subscribe(() => {
+      this.setState({
+        stores: store.getState().auth
+      })
+    });
+  }
+
+  handleLogout () {
+    store.dispatch(logout());
+  }
+
+  menuDisplay () {
+    return this.state.stores.isAuthenticated ? (
+      <Menu theme="dark" mode="horizontal" className="settings" selectable={false}>
+        <Menu.Item key="user">
+          <Dropdown overlay={this.state.menuDropdown}>
+            <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+              Hi, {this.state.stores.user.data.username} <DownOutlined />
+            </a>
+          </Dropdown>
+        </Menu.Item>
+      </Menu>) : (<></>);
   }
 
   render () {
+    if (!this.state.stores.isAuthenticated) {
+      return (<Redirect to="/login" />);
+    } else {
     return (
       <Layout>
+
+      <Header>
+            <div className="logo">
+              <p>nuHome <span style={{marginLeft: '10px', fontSize: '16px'}}>by Refugee Group</span></p>
+            </div>
+            {this.menuDisplay()}
+      </Header>
+
+      <Layout style={{ padding: '10px 50px' }}>
+
         <Sider width={200} className="site-layout-background">
           <Menu
             mode="inline"
@@ -80,8 +138,11 @@ class Index extends React.Component {
             <ViewRouter {...this.props}/>
           </Content>
         </Layout>
+
+      </Layout>
       </Layout>
     )
+  }
   }
 }
 
