@@ -57,16 +57,7 @@ class RegisterNGO extends React.Component {
       return <Redirect to='/home' />
     } else {
       return (
-        <Layout>
 
-          <Header>
-            <div className="logo">
-              <p>nuHome <span style={{marginLeft: '10px', fontSize: '16px'}}>by Refugee Group</span></p>
-            </div>
-          </Header>
-
-          <Layout style={{ padding: '10px 50px' }}>
-            <Content>
               <Form
                 {...formItemLayout}
                 name="register"
@@ -151,15 +142,11 @@ class RegisterNGO extends React.Component {
                   <Button type="primary" htmlType="submit" className="login-form-button">
                     Register
                   </Button>
-                  <Link style={{marginLeft: 10}} to="/login">Back to Login</Link>
                 </Form.Item>
 
               </Form>
 
-            </Content>
-          </Layout>
 
-        </Layout>
       );
     };
   }

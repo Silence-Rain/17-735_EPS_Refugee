@@ -1,13 +1,13 @@
 import axios from 'axios';
 import { returnError } from './errorAction';
 
-export const login = ({ username, password }) => dispatch => {
-  const config = {
-    headers: {
-      'Content-Type': 'application/json',
-    }
-  };
+const config = {
+  headers: {
+    'Content-Type': 'application/json',
+  }
+};
 
+export const login = ({ username, password }) => dispatch => {
   // The login body, "loginRequest" in the backend
   // const body = JSON.stringify({
   //   email,
@@ -18,7 +18,7 @@ export const login = ({ username, password }) => dispatch => {
     const payload = {
       data: {
         username: 'Silence',
-        type: 'refugee',
+        type: 'admin',
         isVerified: true,
         avatar: 1,
         bio: "Hello"
@@ -62,53 +62,61 @@ export const logout = () => (dispatch, getState) => {
   });
 };
 
-// export const register = ({
-//   firstName,
-//   lastName,
-//   username,
-//   email,
-//   password
-// }) => dispatch => {
-//   // everything will be posted using json format
-//   const config = {
-//     headers: {
-//       'Content-Type': 'application/json'
-//     }
-//   };
+export const register = ({
+  username,
+  password,
+  origin,
+  region
+}) => dispatch => {
+  // // Request body
+  // const body = JSON.stringify({
+  //   firstName,
+  //   lastName,
+  //   username,
+  //   email,
+  //   password
+  // });
 
-//   // Request body
-//   const body = JSON.stringify({
-//     firstName,
-//     lastName,
-//     username,
-//     email,
-//     password
-//   });
+  setTimeout(() => {
+    const payload = {
+      data: {
+        username: 'test_refugee',
+        type: 'refugee',
+        isVerified: true,
+        avatar: 1,
+        bio: "Hello"
+      }
+    };
+    dispatch({
+      type: "REGISTER_SUCCESS",
+      payload
+    });
+  }, 1000);
 
-//   // post the registration details to the backend
-//   axios
-//     .post('/api/auth/register', body, config)
-//     .then(res => {
-//       dispatch({
-//         type: REGISTER_SUCCESS,
-//         payload: res.data
-//       });
-//       // redirect user to the home page after successful registration
-//       dispatch(push('/'));
-//     })
-//     .catch(err => {
-//       dispatch(
-//         returnErrors(
-//           err.response.data.message,
-//           err.response.status,
-//           'REGISTER_FAIL'
-//         )
-//       );
-//       dispatch({
-//         type: REGISTER_FAIL
-//       });
-//     });
-// };
+  // // post the registration details to the backend
+  // axios
+  //   .post('/api/auth/register', body, config)
+  //   .then(res => {
+  //     dispatch({
+  //       type: REGISTER_SUCCESS,
+  //       payload: res.data
+  //     });
+  //     // redirect user to the home page after successful registration
+  //     dispatch(push('/'));
+  //   })
+  //   .catch(err => {
+  //     dispatch(
+  //       returnErrors(
+  //         err.response.data.message,
+  //         err.response.status,
+  //         'REGISTER_FAIL'
+  //       )
+  //     );
+  //     dispatch({
+  //       type: REGISTER_FAIL
+  //     });
+  //   });
+};
 
 
 

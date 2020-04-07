@@ -2,6 +2,8 @@ import React from 'react';
 import { Layout, Form, Input, Select, Button, Upload, message } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { Link, Redirect } from 'react-router-dom';
+import store from '../../redux/store';
+import { register } from '../../redux/actions/authAction';
 
 const { Option } = Select;
 const { Header, Content } = Layout;
@@ -57,11 +59,15 @@ class Register extends React.Component {
     }
   }
 
+  componentDidMount () {
+    store.subscribe(() => {
+      this.setState({isLogin: store.getState().auth.isAuthenticated})
+    });
+  }
+
   onFinish = values => {
     console.log('Received values of form: ', values);
-    this.setState({
-      isLogin: true
-    })
+    store.dispatch(register({...values}))
   };
 
   render () {

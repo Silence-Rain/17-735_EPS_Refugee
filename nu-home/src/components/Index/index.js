@@ -1,7 +1,7 @@
 import React from 'react';
 import "./index.css";
 import { Layout, Menu, Dropdown } from 'antd';
-import { AppstoreOutlined, MailOutlined, IdcardOutlined, DownOutlined } from '@ant-design/icons';
+import { AppstoreOutlined, MailOutlined, IdcardOutlined, DownOutlined ,UserAddOutlined } from '@ant-design/icons';
 import { ViewRouter } from '../../routes.js'
 import { Link, Redirect } from 'react-router-dom';
 import store from '../../redux/store';
@@ -16,7 +16,12 @@ class Index extends React.Component {
     this.state = {
       stores: {
         isAuthenticated: true,
-        user: {data:{username: ""}}
+        user: {
+          data:{
+            username: "",
+            type: ""
+          }
+        }
       },
       menuDropdown: (
         <Menu>
@@ -66,50 +71,21 @@ class Index extends React.Component {
       <Layout>
 
       <Header>
-            <div className="logo">
-              <p>nuHome <span style={{marginLeft: '10px', fontSize: '16px'}}>by Refugee Group</span></p>
-            </div>
-            {this.menuDisplay()}
+        <div className="logo">
+          <p>nuHome <span style={{marginLeft: '10px', fontSize: '16px'}}>by Refugee Group</span></p>
+        </div>
+        {this.menuDisplay()}
       </Header>
 
       <Layout style={{ padding: '10px 50px' }}>
 
-        <Sider width={200} className="site-layout-background">
+        <Sider width={250} className="site-layout-background">
           <Menu
             mode="inline"
-            defaultSelectedKeys={['important']}
+            defaultSelectedKeys={['dm']}
             defaultOpenKeys={['forum']}
             style={{ height: '100%', borderRight: 0 }}
           >
-            <SubMenu
-              key="forum"
-              title={
-                <span>
-                  <AppstoreOutlined />
-                  Forum
-                </span>
-              }
-            >
-              <Menu.Item key="important">
-                <Link to={`${this.props.match.path}/forum/important`}>Important!</Link>
-              </Menu.Item>
-              <Menu.Item key="social">
-                <Link to={`${this.props.match.path}/forum/social`}>Social</Link>
-              </Menu.Item>
-              <Menu.Item key="jobs">
-                <Link to={`${this.props.match.path}/forum/jobs`}>Jobs</Link>
-              </Menu.Item>
-              <Menu.Item key="accomodation">
-                <Link to={`${this.props.match.path}/forum/accomodation`}>Accomodation</Link>
-              </Menu.Item>
-              <Menu.Item key="resources">
-                <Link to={`${this.props.match.path}/forum/resources`}>Resources</Link>
-              </Menu.Item>
-              <Menu.Item key="other">
-                <Link to={`${this.props.match.path}/forum/other`}>Other</Link>
-              </Menu.Item>
-            </SubMenu>
-
             <Menu.Item key="dm">
               <span>
                 <MailOutlined />
@@ -117,12 +93,60 @@ class Index extends React.Component {
               <Link to={`${this.props.match.path}/dm`}>Direct Message</Link>
             </Menu.Item>
 
-            <Menu.Item key="status">
-              <span>
-                <IdcardOutlined />
-              </span>
-              <Link to={`${this.props.match.path}/status`}>Refugee Status</Link>
-            </Menu.Item>
+            {
+              this.state.stores.user.data.isVerified ? (
+                <SubMenu
+                  key="forum"
+                  title={
+                    <span>
+                      <AppstoreOutlined />
+                      Forum
+                    </span>
+                  }
+                >
+                  <Menu.Item key="important">
+                    <Link to={`${this.props.match.path}/forum/important`}>Important!</Link>
+                  </Menu.Item>
+                  <Menu.Item key="social">
+                    <Link to={`${this.props.match.path}/forum/social`}>Social</Link>
+                  </Menu.Item>
+                  <Menu.Item key="jobs">
+                    <Link to={`${this.props.match.path}/forum/jobs`}>Jobs</Link>
+                  </Menu.Item>
+                  <Menu.Item key="accomodation">
+                    <Link to={`${this.props.match.path}/forum/accomodation`}>Accomodation</Link>
+                  </Menu.Item>
+                  <Menu.Item key="resources">
+                    <Link to={`${this.props.match.path}/forum/resources`}>Resources</Link>
+                  </Menu.Item>
+                  <Menu.Item key="other">
+                    <Link to={`${this.props.match.path}/forum/other`}>Other</Link>
+                  </Menu.Item>
+                </SubMenu>
+              ) : (<></>)
+            }
+
+            { 
+              this.state.stores.user.data.type !== "refugee" ? (
+                <Menu.Item key="status">
+                  <span>
+                    <IdcardOutlined />
+                  </span>
+                  <Link to={`${this.props.match.path}/status`}>Refugee Status</Link>
+                </Menu.Item>
+              ) : (<></>)
+            }
+
+            { 
+              this.state.stores.user.data.type === "admin" ? (
+                <Menu.Item key="reg_ngo">
+                  <span>
+                    <UserAddOutlined />
+                  </span>
+                  <Link to={`${this.props.match.path}/register_ngo`}>NGO Workers Registration</Link>
+                </Menu.Item>
+              ) : (<></>)
+            }
           </Menu>
         </Sider>
 

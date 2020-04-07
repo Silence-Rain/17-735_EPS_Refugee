@@ -46,8 +46,7 @@ const MainRouter = () => {
         />
       </Route>
       <Route exact path='/login' component={Login} />
-      <Route exact path='/register' component={Register} />
-      <Route exact path='/register_ngo' component={RegisterNGO} />
+      <Route exact path='/register' component={Register} />    
       <Route path='/home' component={Index} />
     </Switch>
   )
@@ -59,7 +58,7 @@ const ViewRouter = (props) => {
       <Route exact path={`${props.match.path}`}>
         <Redirect 
           to={{
-            pathname: `${props.match.path}/forum/important`
+            pathname: `${props.match.path}/dm`
           }}
         />
       </Route>
@@ -67,6 +66,7 @@ const ViewRouter = (props) => {
       <Route exact path={`${props.match.path}/dm`} component={DirectMessage} />
       <Route exact path={`${props.match.path}/status`} component={RefugeeStatus} />
       <Route exact path={`${props.match.path}/settings`} component={Settings} />
+      <Route exact path={`${props.match.path}/register_ngo`} component={RegisterNGO} />
     </Switch>
   )
 }
