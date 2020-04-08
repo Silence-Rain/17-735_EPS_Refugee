@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { returnError } from './errorAction';
+import { returnError, clearError } from './errorAction';
 
 const config = {
   headers: {
@@ -13,20 +13,82 @@ export const login = ({ username, password }) => dispatch => {
   //   email,
   //   password
   // });
-
-  setTimeout(() => {
-    const payload = {
-      username: 'Silence',
-      type: 'admin',
-      isVerified: true,
-      avatar: 1,
-      bio: "Hello"
-    };
+  if (username === "Silence") {
+    if (password == "s") {
+      dispatch(clearError());
+      setTimeout(() => {
+        const payload = {
+          username: 'Silence',
+          type: 'refugee',
+          isVerified: true,
+          avatar: 1,
+          bio: "Hello"
+        };
+        dispatch({
+          type: "LOGIN_SUCCESS",
+          payload
+        });
+      }, 1000);
+    } else {
+      dispatch(
+        returnError("Login failed", 400)
+      )
+      dispatch({
+        type: "LOGIN_FAILED",
+      });
+    }
+  } else if (username === "NGO_Worker") {
+    dispatch(clearError());
+    setTimeout(() => {
+      const payload = {
+        username: 'NGO_Worker',
+        type: 'ngo',
+        isVerified: true,
+        avatar: 1,
+        bio: "Hello"
+      };
+      dispatch({
+        type: "LOGIN_SUCCESS",
+        payload
+      });
+    }, 1000);
+  } else if (username === "NGO_Admin") {
+    dispatch(clearError());
+    setTimeout(() => {
+      const payload = {
+        username: 'NGO_Admin',
+        type: 'admin',
+        isVerified: true,
+        avatar: 1,
+        bio: "Hello"
+      };
+      dispatch({
+        type: "LOGIN_SUCCESS",
+        payload
+      });
+    }, 1000);
+  } else {
+    dispatch(
+      returnError("Login failed", 400)
+    )
     dispatch({
-      type: "LOGIN_SUCCESS",
-      payload
+      type: "LOGIN_FAILED",
     });
-  }, 1000);
+  }
+
+  // setTimeout(() => {
+  //   const payload = {
+  //     username: 'Silence',
+  //     type: 'admin',
+  //     isVerified: true,
+  //     avatar: 1,
+  //     bio: "Hello"
+  //   };
+  //   dispatch({
+  //     type: "LOGIN_SUCCESS",
+  //     payload
+  //   });
+  // }, 1000);
 
   // submit a post request to '/api/auth/login'
   // axios
@@ -72,9 +134,9 @@ export const register = ({
 
   setTimeout(() => {
     const payload = {
-      username: 'Silence',
-      type: 'admin',
-      isVerified: true,
+      username: username,
+      type: 'refugee',
+      isVerified: false,
       avatar: 1,
       bio: "Hello"
     };

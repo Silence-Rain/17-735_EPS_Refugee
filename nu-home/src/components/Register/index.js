@@ -83,8 +83,8 @@ class Register extends React.Component {
             </div>
           </Header>
 
-          <Layout style={{ padding: '10px 50px' }}>
-            <Content>
+          <Layout style={{ padding: '10px 50px', textAlign: "center" }}>
+            <Content style={{width: 700}}>
               <Form
                 {...formItemLayout}
                 name="register"

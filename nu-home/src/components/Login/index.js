@@ -1,5 +1,5 @@
 import React from "react";
-import { Layout, Form, Input, Button } from 'antd';
+import { Layout, Form, Input, Button, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { Link, Redirect } from 'react-router-dom';
 import store from '../../redux/store';
@@ -11,19 +11,29 @@ class LoginForm extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
-      isLogin: false
+      isLogin: false,
+      err: {
+        msg: "",
+        status: 0
+      }
     }
   }
 
   componentDidMount () {
     store.subscribe(() => {
-      this.setState({isLogin: store.getState().auth.isAuthenticated})
+      this.setState({
+        isLogin: store.getState().auth.isAuthenticated,
+        err: store.getState().error
+      })
     });
   }
 
   onFinish = values => {
     console.log('Received values of form: ', values);
     store.dispatch(login({...values}))
+    if (this.state.err.status === 400) {
+      message.error(this.state.err.msg)
+    }
   };
 
   render () {
@@ -39,8 +49,8 @@ class LoginForm extends React.Component {
             </div>
           </Header>
 
-          <Layout style={{ padding: '10px 50px' }}>
-            <Content>
+          <Layout style={{ padding: '10px 50px', textAlign: "center" }}>
+            <Content style={{width: 500}}>
 
               <Form
                 name="login"
