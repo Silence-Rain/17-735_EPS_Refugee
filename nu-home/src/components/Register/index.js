@@ -4,6 +4,7 @@ import { UploadOutlined } from '@ant-design/icons';
 import { Link, Redirect } from 'react-router-dom';
 import store from '../../redux/store';
 import { register } from '../../redux/actions/authAction';
+import "./index.css";
 
 const { Option } = Select;
 const { Header, Content } = Layout;
@@ -14,7 +15,7 @@ const formItemLayout = {
       span: 24,
     },
     sm: {
-      span: 8,
+      span: 6,
     },
   },
   wrapperCol: {
@@ -22,7 +23,7 @@ const formItemLayout = {
       span: 24,
     },
     sm: {
-      span: 16,
+      span: 14
     },
   },
 };
@@ -34,7 +35,7 @@ const tailFormItemLayout = {
     },
     sm: {
       span: 16,
-      offset: 8,
+      offset: 4,
     },
   },
 };
@@ -79,133 +80,136 @@ class Register extends React.Component {
 
           <Header>
             <div className="logo">
-              <p>nuHome <span style={{marginLeft: '10px', fontSize: '16px'}}>by Refugee Group</span></p>
+              <p>nuHome <span style={{marginLeft: '10px', fontSize: '14px'}}>by Refugee Group</span></p>
             </div>
           </Header>
 
-          <Layout style={{ padding: '10px 50px', textAlign: "center" }}>
-            <Content style={{width: 700}}>
-              <Form
-                {...formItemLayout}
-                name="register"
-                onFinish={this.onFinish}
-                scrollToFirstError
-              >
-                <Form.Item
-                  name="username"
-                  label="Username"
-                  rules={[
-                    {
-                      required: true,
-                      message: 'Please input your username!',
-                    },
-                  ]}
+          <Layout className="main-layout">
+            <Content className="main-content">
+              <div style={{ width: "90%" }}>
+                <h1>Sign up</h1>
+
+                <Form
+                  {...formItemLayout}
+                  name="register"
+                  onFinish={this.onFinish}
+                  scrollToFirstError
                 >
-                  <Input />
-                </Form.Item>
-
-                <Form.Item
-                  name="password"
-                  label="Password"
-                  rules={[
-                    {
-                      required: true,
-                      message: 'Please input your password!',
-                    },
-                  ]}
-                  hasFeedback
-                >
-                  <Input.Password />
-                </Form.Item>
-
-                <Form.Item
-                  name="confirm"
-                  label="Confirm Password"
-                  dependencies={['password']}
-                  hasFeedback
-                  rules={[
-                    {
-                      required: true,
-                      message: 'Please confirm your password!',
-                    },
-                    ({ getFieldValue }) => ({
-                      validator(rule, value) {
-                        if (!value || getFieldValue('password') === value) {
-                          return Promise.resolve();
-                        }
-
-                        return Promise.reject('The two passwords that you entered do not match!');
+                  <Form.Item
+                    name="username"
+                    label="Username"
+                    rules={[
+                      {
+                        required: true,
+                        message: 'Please input your username!',
                       },
-                    }),
-                  ]}
-                >
-                  <Input.Password />
-                </Form.Item>
-
-                <Form.Item
-                  name="origin" 
-                  label="Country of Origin" 
-                  rules={[
-                    { 
-                      required: true,
-                      message: 'Please select your country of origin!',
-                    }
-                  ]}
-                >
-                  <Select
-                    showSearch
+                    ]}
                   >
-                    {
-                      countries.length && countries.map(item => (
-                        <Option key={item} value={item}>{item}</Option>
-                      )) 
-                    }
-                  </Select>
-                </Form.Item>
+                    <Input />
+                  </Form.Item>
 
-                <Form.Item
-                  name="region" 
-                  label="Current Region" 
-                  rules={[
-                    { 
-                      required: true,
-                      message: 'Please select your current region!',
-                    }
-                  ]}
-                >
-                  <Select
-                    showSearch
+                  <Form.Item
+                    name="password"
+                    label="Password"
+                    rules={[
+                      {
+                        required: true,
+                        message: 'Please input your password!',
+                      },
+                    ]}
+                    hasFeedback
                   >
-                    {
-                      countries.length && countries.map(item => (
-                        <Option key={item} value={item}>{item}</Option>
-                      )) 
-                    }
-                  </Select>
-                </Form.Item>
+                    <Input.Password />
+                  </Form.Item>
 
-                <Form.Item
-                  {...tailFormItemLayout}
-                >
-                  If you have one, please upload your government issued ID: <br/>
-                  <Upload {...id_props}>
-                    <Button>
-                      <UploadOutlined /> Click to Upload
+                  <Form.Item
+                    name="confirm"
+                    label="Confirm Password"
+                    dependencies={['password']}
+                    hasFeedback
+                    rules={[
+                      {
+                        required: true,
+                        message: 'Please confirm your password!',
+                      },
+                      ({ getFieldValue }) => ({
+                        validator(rule, value) {
+                          if (!value || getFieldValue('password') === value) {
+                            return Promise.resolve();
+                          }
+
+                          return Promise.reject('The two passwords that you entered do not match!');
+                        },
+                      }),
+                    ]}
+                  >
+                    <Input.Password />
+                  </Form.Item>
+
+                  <Form.Item
+                    name="origin" 
+                    label="Country of Origin" 
+                    rules={[
+                      { 
+                        required: true,
+                        message: 'Please select your country of origin!',
+                      }
+                    ]}
+                  >
+                    <Select
+                      showSearch
+                    >
+                      {
+                        countries.length && countries.map(item => (
+                          <Option key={item} value={item}>{item}</Option>
+                        )) 
+                      }
+                    </Select>
+                  </Form.Item>
+
+                  <Form.Item
+                    name="region" 
+                    label="Current Region" 
+                    rules={[
+                      { 
+                        required: true,
+                        message: 'Please select your current region!',
+                      }
+                    ]}
+                  >
+                    <Select
+                      showSearch
+                    >
+                      {
+                        countries.length && countries.map(item => (
+                          <Option key={item} value={item}>{item}</Option>
+                        )) 
+                      }
+                    </Select>
+                  </Form.Item>
+
+                  <Form.Item
+                    {...tailFormItemLayout}
+                  >
+                    If you have one, please upload your government issued ID: <br/>
+                    <Upload {...id_props}>
+                      <Button>
+                        <UploadOutlined /> Click to Upload
+                      </Button>
+                    </Upload>
+                  </Form.Item>
+
+                  <Form.Item
+                    {...tailFormItemLayout}
+                  >
+                    <Button type="primary" htmlType="submit" className="login-form-button">
+                      Register
                     </Button>
-                  </Upload>
-                </Form.Item>
+                    <Link style={{marginLeft: 10}} to="/login">Back to Login</Link>
+                  </Form.Item>
+                </Form>
 
-                <Form.Item
-                  {...tailFormItemLayout}
-                >
-                  <Button type="primary" htmlType="submit" className="login-form-button">
-                    Register
-                  </Button>
-                  <Link style={{marginLeft: 10}} to="/login">Back to Login</Link>
-                </Form.Item>
-
-              </Form>
-
+              </div>
             </Content>
           </Layout>
 

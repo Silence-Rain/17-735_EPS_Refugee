@@ -76,14 +76,14 @@ class Index extends React.Component {
 
       <Header>
         <div className="logo">
-          <p>nuHome <span style={{marginLeft: '10px', fontSize: '16px'}}>by Refugee Group</span></p>
+          <p>nuHome <span style={{marginLeft: '10px', fontSize: '14px'}}>by EPS-Refugee</span></p>
         </div>
         {this.menuDisplay()}
       </Header>
 
       <Layout style={{ padding: '10px 50px' }}>
 
-        <Sider width={250} className="site-layout-background">
+        <Sider breakpoint="xs" collapsedWidth="0" className="site-layout-content" width={250}>
           <Menu
             mode="inline"
             defaultSelectedKeys={['dm']}
@@ -97,38 +97,35 @@ class Index extends React.Component {
               <Link to={`${this.props.match.path}/dm`}>Direct Message</Link>
             </Menu.Item>
 
-            {
-              this.state.stores.user.isVerified ? (
-                <SubMenu
-                  key="forum"
-                  title={
-                    <span>
-                      <AppstoreOutlined />
-                      Forum
-                    </span>
-                  }
-                >
-                  <Menu.Item key="important">
-                    <Link to={`${this.props.match.path}/forum/important`}>Important!</Link>
-                  </Menu.Item>
-                  <Menu.Item key="social">
-                    <Link to={`${this.props.match.path}/forum/social`}>Social</Link>
-                  </Menu.Item>
-                  <Menu.Item key="jobs">
-                    <Link to={`${this.props.match.path}/forum/jobs`}>Jobs</Link>
-                  </Menu.Item>
-                  <Menu.Item key="accomodation">
-                    <Link to={`${this.props.match.path}/forum/accomodation`}>Accomodation</Link>
-                  </Menu.Item>
-                  <Menu.Item key="resources">
-                    <Link to={`${this.props.match.path}/forum/resources`}>Resources</Link>
-                  </Menu.Item>
-                  <Menu.Item key="other">
-                    <Link to={`${this.props.match.path}/forum/other`}>Other</Link>
-                  </Menu.Item>
-                </SubMenu>
-              ) : (<></>)
-            }
+            <SubMenu
+              key="forum"
+              title={
+                <span>
+                  <AppstoreOutlined />
+                  Forum
+                </span>
+              }
+              disabled={!this.state.stores.user.isVerified}
+            >
+              <Menu.Item key="important" disabled={!this.state.stores.user.isVerified}>
+                <Link to={`${this.props.match.path}/forum/important`}>Important!</Link>
+              </Menu.Item>
+              <Menu.Item key="social" disabled={!this.state.stores.user.isVerified}>
+                <Link to={`${this.props.match.path}/forum/social`}>Social</Link>
+              </Menu.Item>
+              <Menu.Item key="jobs" disabled={!this.state.stores.user.isVerified}>
+                <Link to={`${this.props.match.path}/forum/jobs`}>Jobs</Link>
+              </Menu.Item>
+              <Menu.Item key="accomodation" disabled={!this.state.stores.user.isVerified}>
+                <Link to={`${this.props.match.path}/forum/accomodation`}>Accomodation</Link>
+              </Menu.Item>
+              <Menu.Item key="resources" disabled={!this.state.stores.user.isVerified}>
+                <Link to={`${this.props.match.path}/forum/resources`}>Resources</Link>
+              </Menu.Item>
+              <Menu.Item key="other" disabled={!this.state.stores.user.isVerified}>
+                <Link to={`${this.props.match.path}/forum/other`}>Other</Link>
+              </Menu.Item>
+            </SubMenu>
 
             { 
               this.state.stores.user.type !== "refugee" ? (
@@ -154,15 +151,8 @@ class Index extends React.Component {
           </Menu>
         </Sider>
 
-        <Layout style={{ padding: '0 24px 24px' }}>
-          <Content
-            className="site-layout-background"
-            style={{
-              padding: 24,
-              margin: 0,
-              minHeight: 280,
-            }}
-          >
+        <Layout style={{ padding: '0 24px' }}>
+          <Content className="site-layout-content" style={{ padding: 24 }}>
             <ViewRouter {...this.props}/>
           </Content>
         </Layout>

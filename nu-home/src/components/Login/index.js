@@ -4,6 +4,7 @@ import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { Link, Redirect } from 'react-router-dom';
 import store from '../../redux/store';
 import { login } from '../../redux/actions/authAction';
+import "./index.css";
 
 const { Header, Content } = Layout;
 
@@ -45,55 +46,55 @@ class LoginForm extends React.Component {
 
           <Header>
             <div className="logo">
-              <p>nuHome <span style={{marginLeft: '10px', fontSize: '16px'}}>by Refugee Group</span></p>
+              <p>nuHome <span style={{marginLeft: '10px', fontSize: '14px'}}>by EPS-Refugee</span></p>
             </div>
           </Header>
 
-          <Layout style={{ padding: '10px 50px', textAlign: "center" }}>
-            <Content style={{width: 500}}>
+          <Layout className="main-layout">
+            <Content className="main-content">
+              <div style={{ width: "300px" }}>
+                <h1>Sign in</h1>
 
-              <Form
-                name="login"
-                initialValues={{
-                  remember: true,
-                }}
-                onFinish={this.onFinish}
-              >
-                <Form.Item
-                  name="username"
-                  rules={[
-                    {
-                      required: true,
-                      message: 'Please input your Username!',
-                    },
-                  ]}
+                <Form
+                  name="login"
+                  onFinish={this.onFinish}
                 >
-                  <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
-                </Form.Item>
-                <Form.Item
-                  name="password"
-                  rules={[
-                    {
-                      required: true,
-                      message: 'Please input your Password!',
-                    },
-                  ]}
-                >
-                  <Input
-                    prefix={<LockOutlined className="site-form-item-icon" />}
-                    type="password"
-                    placeholder="Password"
-                  />
-                </Form.Item>
+                  <Form.Item
+                    name="username"
+                    rules={[
+                      {
+                        required: true,
+                        message: 'Please input your Username!',
+                      },
+                    ]}
+                  >
+                    <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
+                  </Form.Item>
+                  <Form.Item
+                    name="password"
+                    rules={[
+                      {
+                        required: true,
+                        message: 'Please input your Password!',
+                      },
+                    ]}
+                  >
+                    <Input
+                      prefix={<LockOutlined className="site-form-item-icon" />}
+                      type="password"
+                      placeholder="Password"
+                    />
+                  </Form.Item>
 
-                <Form.Item>
-                  <Button type="primary" htmlType="submit" className="login-form-button">
-                    Log in
-                  </Button>
-                  <Link style={{marginLeft: 10}} to="/register">Register now!</Link>
-                </Form.Item>
-              </Form>
-
+                  <Form.Item>
+                    <Button type="primary" htmlType="submit" className="login-form-button">
+                      Log in
+                    </Button>
+                    <Link style={{marginLeft: 10}} to="/register">Register now!</Link>
+                  </Form.Item>
+                </Form>
+              
+              </div>
             </Content>
           </Layout>
 
