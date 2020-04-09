@@ -8,7 +8,7 @@ for (let i = 0; i < 23; i++) {
   listData.push({
     href: '',
     title: `Title ${i}`,
-    avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
+    avatar: '/assets/silence.png',
     tag: tags[i % 6],
     content:
       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa officiis est, tenetur modi illum nesciunt porro expedita in iure dolor cupiditate ab voluptatum? Laborum labore inventore exercitationem nostrum corrupti tenetur.',

@@ -1,7 +1,7 @@
 import React from "react";
 import { Comment, Avatar, Form, Button, List, Input, Divider, Space } from 'antd';
 import moment from 'moment';
-import "./index.css"
+import "./index.css";
 
 const { TextArea } = Input;
 
@@ -32,13 +32,13 @@ class DirectMessage extends React.Component {
     comments: [
       {
         author: 'Refugee',
-        avatar: 'https://images.xtensio.com/images/big/jxj6563/SLWwZgfXFkmgq_REmuJgmw.jpg',
+        avatar: '/assets/refugee.png',
         content: <p>Hi, I'm looking for help</p>,
         datetime: moment(1586424056559).fromNow(),
       },
       {
         author: 'Silence',
-        avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
+        avatar: '/assets/silence.png',
         content: <p>Hi, I'm here to help you!</p>,
         datetime: moment(1586425058000).fromNow(),
       },
@@ -64,7 +64,7 @@ class DirectMessage extends React.Component {
           ...this.state.comments,
           {
             author: 'Silence',
-            avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
+            avatar: '/assets/silence.png',
             content: <p>{this.state.value}</p>,
             datetime: moment().fromNow(),
           },
@@ -84,14 +84,14 @@ class DirectMessage extends React.Component {
 
     return (
       <div className="two-cols-layout">
-        <div style={{ width: "65%", marginRight: "20px" }}>
+        <div style={{ width: "65%", marginRight: "5%" }}>
           <h2>DirectMessage </h2>
           {comments.length > 0 && <CommentList username="Refugee" comments={comments} />}
           <Divider />
           <Comment
             avatar={
               <Avatar
-                src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                src="/assets/silence.png"
                 alt="Silence"
               />
             }
@@ -113,7 +113,7 @@ class DirectMessage extends React.Component {
               <List.Item>
                 <Space>
                   <Avatar
-                    src="https://images.xtensio.com/images/big/jxj6563/SLWwZgfXFkmgq_REmuJgmw.jpg"
+                    src="/assets/refugee.png"
                     alt="Refugee"
                   />
                   {item}
