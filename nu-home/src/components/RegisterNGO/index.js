@@ -19,90 +19,91 @@ class RegisterNGO extends React.Component {
   render () {
     return (
       <div className="wrapper">
-      <Form
-        name="register"
-        onFinish={this.onFinish}
-        scrollToFirstError
-      >
-        <Form.Item
-          name="username"
-          label="Username"
-          rules={[
-            {
-              required: true,
-              message: 'Please input your username!',
-            },
-          ]}
+        Register Your Fellow Workers
+        <Form
+          name="register"
+          onFinish={this.onFinish}
+          scrollToFirstError
         >
-          <Input />
-        </Form.Item>
-
-        <Form.Item
-          name="password"
-          label="Password"
-          rules={[
-            {
-              required: true,
-              message: 'Please input your password!',
-            },
-          ]}
-          hasFeedback
-        >
-          <Input.Password />
-        </Form.Item>
-
-        <Form.Item
-          name="confirm"
-          label="Confirm Password"
-          dependencies={['password']}
-          hasFeedback
-          rules={[
-            {
-              required: true,
-              message: 'Please confirm your password!',
-            },
-            ({ getFieldValue }) => ({
-              validator(rule, value) {
-                if (!value || getFieldValue('password') === value) {
-                  return Promise.resolve();
-                }
-
-                return Promise.reject('The two passwords that you entered do not match!');
+          <Form.Item
+            name="username"
+            label="Username"
+            rules={[
+              {
+                required: true,
+                message: 'Please input your username!',
               },
-            }),
-          ]}
-        >
-          <Input.Password />
-        </Form.Item>
-
-        <Form.Item
-          name="region" 
-          label="Region" 
-          rules={[
-            { 
-              required: true,
-              message: 'Please select your region!',
-            }
-          ]}
-        >
-          <Select
-            showSearch
+            ]}
           >
-            {
-              countries.length && countries.map(item => (
-                <Option key={item} value={item}>{item}</Option>
-              )) 
-            }
-          </Select>
-        </Form.Item>
+            <Input />
+          </Form.Item>
 
-        <Form.Item
-        >
-          <Button type="primary" htmlType="submit" className="login-form-button">
-            Register Your Worker
-          </Button>
-        </Form.Item>
-      </Form>
+          <Form.Item
+            name="password"
+            label="Password"
+            rules={[
+              {
+                required: true,
+                message: 'Please input your password!',
+              },
+            ]}
+            hasFeedback
+          >
+            <Input.Password />
+          </Form.Item>
+
+          <Form.Item
+            name="confirm"
+            label="Confirm Password"
+            dependencies={['password']}
+            hasFeedback
+            rules={[
+              {
+                required: true,
+                message: 'Please confirm your password!',
+              },
+              ({ getFieldValue }) => ({
+                validator(rule, value) {
+                  if (!value || getFieldValue('password') === value) {
+                    return Promise.resolve();
+                  }
+
+                  return Promise.reject('The two passwords that you entered do not match!');
+                },
+              }),
+            ]}
+          >
+            <Input.Password />
+          </Form.Item>
+
+          <Form.Item
+            name="region" 
+            label="Region" 
+            rules={[
+              { 
+                required: true,
+                message: 'Please select your region!',
+              }
+            ]}
+          >
+            <Select
+              showSearch
+            >
+              {
+                countries.length && countries.map(item => (
+                  <Option key={item} value={item}>{item}</Option>
+                )) 
+              }
+            </Select>
+          </Form.Item>
+
+          <Form.Item
+          >
+            <Button type="primary" htmlType="submit" className="login-form-button">
+              Register Your Worker
+            </Button>
+          </Form.Item>
+        </Form>
       </div>
     );
   }
