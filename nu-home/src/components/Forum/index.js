@@ -20,7 +20,7 @@ class Forum extends React.Component {
     const { category } = this.props.match.params;   
     return (
       <div>
-        Forum: { category }
+        <h2>Forum: { category }</h2>
         <List
           itemLayout="vertical"
           size="large"

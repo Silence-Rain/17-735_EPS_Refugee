@@ -1,0 +1,4 @@
+.two-cols-layout {
+	display: flex;
+	flex-direction: row;
+}

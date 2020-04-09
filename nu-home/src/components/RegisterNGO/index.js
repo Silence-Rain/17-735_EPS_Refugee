@@ -19,7 +19,7 @@ class RegisterNGO extends React.Component {
   render () {
     return (
       <div className="wrapper">
-        Register Your Fellow Workers
+        <h2>Register Your Fellow Workers</h2>
         <Form
           name="register"
           onFinish={this.onFinish}

@@ -52,7 +52,7 @@ class RefugeeStatus extends React.Component {
   render () {
     return (
       <div>
-      	RefugeeStatus 
+      	<h2>RefugeeStatus </h2>
       	<Table columns={columns} dataSource={data} />
       </div>
     )
