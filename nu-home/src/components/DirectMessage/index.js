@@ -5,6 +5,7 @@ import "./index.css";
 
 const { TextArea } = Input;
 
+// Layout of chat history
 const CommentList = ({ username, comments }) => (
   <List
     dataSource={comments}
@@ -14,6 +15,7 @@ const CommentList = ({ username, comments }) => (
   />
 );
 
+// Layout of message editor
 const Editor = ({ onChange, onSubmit, submitting, value }) => (
   <div>
     <Form.Item>
@@ -29,6 +31,7 @@ const Editor = ({ onChange, onSubmit, submitting, value }) => (
 
 class DirectMessage extends React.Component {
   state = {
+    // Fake data for demo purpose
     comments: [
       {
         author: 'Refugee',
@@ -47,6 +50,7 @@ class DirectMessage extends React.Component {
     value: '',
   };
 
+  // Handler for "send message" button
   handleSubmit = () => {
     if (!this.state.value) {
       return;
@@ -56,6 +60,7 @@ class DirectMessage extends React.Component {
       submitting: true,
     });
 
+    // Fake submission, test async operation
     setTimeout(() => {
       this.setState({
         submitting: false,
@@ -73,12 +78,14 @@ class DirectMessage extends React.Component {
     }, 1000);
   };
 
+  // Record the value of textarea in a real-time fashion
   handleChange = e => {
     this.setState({
       value: e.target.value,
     });
   };
 
+  // Layout of DirectMessage component
   render() {
     const { comments, submitting, value } = this.state;
 

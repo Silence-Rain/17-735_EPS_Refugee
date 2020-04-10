@@ -1,6 +1,8 @@
 import { returnError, clearError } from './errorAction';
 import api from "../../api"
 
+// Action creator for login
+// Dispatch the corresponding events to reducer, reducer will update the store accordingly
 export const login = ({ 
   username, 
   password 
@@ -24,6 +26,9 @@ export const login = ({
     });
 };
 
+// Action creator for logout
+// Note that CSRF token is attached after logged-in
+// Dispatch the corresponding events to reducer, reducer will update the store accordingly
 export const logout = () => (dispatch, getState) => {
   dispatch(clearError());
   return api.post("/logout/", {}, {
@@ -41,6 +46,8 @@ export const logout = () => (dispatch, getState) => {
     })
 };
 
+// Action creator for registration
+// Dispatch the corresponding events to reducer, reducer will update the store accordingly
 export const register = ({
   username,
   password,

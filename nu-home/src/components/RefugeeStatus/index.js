@@ -1,6 +1,7 @@
 import React from "react";
 import { Table, Popconfirm, Divider } from 'antd';
 
+// Column settings for the table
 const columns = [
   {
     title: 'Username',
@@ -30,6 +31,7 @@ const columns = [
     ),
   },
 ];
+// Fake data for demo purpose
 const data = [
   {
     key: '1',
@@ -49,6 +51,7 @@ const data = [
 ];
 
 class RefugeeStatus extends React.Component {
+  // Layout of RefugeeStatus component
   render () {
     return (
       <div>

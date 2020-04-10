@@ -3,6 +3,7 @@ const initialState = {
   status: null
 };
 
+// Reducer for error messages
 export default (state = initialState, action) => {
   switch (action.type) {
     case "SET_ERROR":

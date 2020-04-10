@@ -6,6 +6,7 @@ const { Footer } = Layout;
 
 class App extends React.Component {
 
+  // Basic layout 
   render () {
     return (
       <div>

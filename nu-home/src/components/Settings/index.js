@@ -6,6 +6,8 @@ class Settings extends React.Component {
   state = {
     username: "Silence"
   }
+
+  // Layout of Settings component
   render () {
     return (
       <div style={{ width: "60%" }}>

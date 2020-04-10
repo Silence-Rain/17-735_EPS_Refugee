@@ -1,7 +1,9 @@
 import axios from "axios";
 
+// Determine backend URL
 let server = process.env.NODE_ENV === 'production' ? 'http://www.silence-rain.com/api' : 'http://localhost/api';
 
+// Wrapped API object
 const api = axios.create({
   baseURL: server,
   headers: {

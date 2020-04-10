@@ -2,6 +2,7 @@ import React from "react";
 import { withRouter } from "react-router-dom";
 import { List, Avatar, Tag } from 'antd';
 
+// Fake data for demo purpose
 const listData = [];
 const tags = ["important", "social", "jobs", "accomodation", "resources", "other"]
 for (let i = 0; i < 23; i++) {
@@ -16,6 +17,7 @@ for (let i = 0; i < 23; i++) {
 }
 
 class Forum extends React.Component {
+  // Layout of Forum component
   render () {
     const { category } = this.props.match.params;   
     return (

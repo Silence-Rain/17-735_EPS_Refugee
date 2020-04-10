@@ -20,6 +20,8 @@ class LoginForm extends React.Component {
     }
   }
 
+  // When the component is mounted, register a listener for redux store
+  // Once store has been changed, update this.state accordingly
   componentDidMount () {
     this.unsubscribe = store.subscribe(() => {
       this.setState({
@@ -29,10 +31,13 @@ class LoginForm extends React.Component {
     })
   }
 
+  // When the component is going to be unmounted, unregister the lister for redux store
   componentWillUnmount () {
     this.unsubscribe();
   }
 
+  // Handler for "Login" buttion
+  // If login succeed, redirect to the homepage
   onFinish = values => {
     store.dispatch(login({...values}))
       .then(res => {
@@ -47,6 +52,8 @@ class LoginForm extends React.Component {
       })
   };
 
+  // Layout of the Login form
+  // All the fields are required, otherwise error messages would be displayed
   render () {
     return (
       <Layout>
@@ -112,6 +119,7 @@ class LoginForm extends React.Component {
 
 
 class Login extends React.Component {
+  // Layout of Login component
   render () {
     return (
       <LoginForm history={this.props.history}/>

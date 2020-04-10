@@ -28,6 +28,7 @@ class Index extends React.Component {
         }
       },
       isVerified: false,
+      // Dropdown menu for user's settings and logout
       menuDropdown: (
         <Menu>
           <Menu.Item key="settings">
@@ -40,6 +41,8 @@ class Index extends React.Component {
     };
   }
 
+  // When the component is mounted, register a listener for redux store
+  // Once store has been changed, update this.state accordingly
   componentDidMount () {
     this.setState({
       stores: store.getState(),
@@ -52,10 +55,13 @@ class Index extends React.Component {
     });
   }
 
+  // When the component is going to be unmounted, unregister the lister for redux store
   componentWillUnmount () {
     this.unsubscribe();
   }
 
+  // Handler for "logout" button
+  // If logout succeed, redirect to the login page
   onLogout = () => {
     store.dispatch(logout())
       .then(res => {
@@ -69,6 +75,7 @@ class Index extends React.Component {
       })
   }
 
+  // Only display the dropdown menu if user has logged-in
   menuDisplay () {
     return this.state.stores.auth.isAuthenticated ? (
       <Menu theme="dark" mode="horizontal" className="settings" selectable={false}>
@@ -86,6 +93,8 @@ class Index extends React.Component {
       </Menu>) : (<></>);
   }
 
+  // Layout of Index component
+  // Will display different views according to user's type
   render () {
     return (
       <Layout>
@@ -113,6 +122,7 @@ class Index extends React.Component {
               <Link to={`${this.props.match.path}/dm`}>Direct Message</Link>
             </Menu.Item>
 
+          {/*If the user is an unverified refugee, then he/she can not access the forum page*/}
             <SubMenu
               key="forum"
               title={
@@ -143,6 +153,7 @@ class Index extends React.Component {
               </Menu.Item>
             </SubMenu>
 
+            {/*If the user is a refugee, then he/she can not access the refugee status page*/}
             { 
               (this.state.stores.auth.user.user_type === "ngo_worker" 
                 || this.state.stores.auth.user.user_type === "ngo_admin") ? (
@@ -155,6 +166,7 @@ class Index extends React.Component {
               ) : (<></>)
             }
 
+          {/*Only admin can access the NGO registration page*/}
             {
               this.state.stores.auth.user.user_type === "ngo_admin" ? (
                 <Menu.Item key="reg_ngo">

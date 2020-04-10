@@ -12,6 +12,8 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    // When login/register succeed, 
+    // mark the user as "isAuthenticated" and store the user profile and the CSRF token for following requests
     case "LOGIN_SUCCESS":
     case "REGISTER_SUCCESS":
       return {
@@ -20,6 +22,8 @@ export default (state = initialState, action) => {
         user: action.payload,
         token: Cookies.get("csrftoken"),
       };
+    // When logout succeed or failed to login/register, 
+    // Clear all cookies and restore the states
     case "LOGIN_FAILED":
     case "REGISTER_FAILED":
     case "LOGOUT_SUCCESS":
