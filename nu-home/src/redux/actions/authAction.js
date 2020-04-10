@@ -1,126 +1,52 @@
 import axios from 'axios';
 import { returnError, clearError } from './errorAction';
+//import api from "../../api.js"
 
-const config = {
+const options = {
+  baseURL: 'http://localhost/api/',
   headers: {
     'Content-Type': 'application/json',
-  }
-};
+  },
+  withCredentials: true,
+}
 
 export const login = ({ username, password }) => dispatch => {
-  // The login body, "loginRequest" in the backend
-  // const body = JSON.stringify({
-  //   email,
-  //   password
-  // });
-  
-  // if (username === "Silence") {
-  //   if (password == "s") {
-  //     dispatch(clearError());
-  //     setTimeout(() => {
-  //       const payload = {
-  //         username: 'Silence',
-  //         type: 'refugee',
-  //         isVerified: true,
-  //         avatar: 1,
-  //         bio: "Hello"
-  //       };
-  //       dispatch({
-  //         type: "LOGIN_SUCCESS",
-  //         payload
-  //       });
-  //     }, 1000);
-  //   } else {
-  //     dispatch(
-  //       returnError("Login failed", 400)
-  //     )
-  //     dispatch({
-  //       type: "LOGIN_FAILED",
-  //     });
-  //   }
-  // } else if (username === "NGO_Worker") {
-  //   dispatch(clearError());
-  //   setTimeout(() => {
-  //     const payload = {
-  //       username: 'NGO_Worker',
-  //       type: 'ngo',
-  //       isVerified: true,
-  //       avatar: 1,
-  //       bio: "Hello"
-  //     };
-  //     dispatch({
-  //       type: "LOGIN_SUCCESS",
-  //       payload
-  //     });
-  //   }, 1000);
-  // } else if (username === "NGO_Admin") {
-  //   dispatch(clearError());
-  //   setTimeout(() => {
-  //     const payload = {
-  //       username: 'NGO_Admin',
-  //       type: 'admin',
-  //       isVerified: true,
-  //       avatar: 1,
-  //       bio: "Hello"
-  //     };
-  //     dispatch({
-  //       type: "LOGIN_SUCCESS",
-  //       payload
-  //     });
-  //   }, 1000);
-  // } else {
-  //   dispatch(
-  //     returnError("Login failed", 400)
-  //   )
-  //   dispatch({
-  //     type: "LOGIN_FAILED",
-  //   });
-  // }
-
-  setTimeout(() => {
-    const payload = {
-      username: 'Silence',
-      type: 'admin',
-      isVerified: true,
-      avatar: 1,
-      bio: "Hello"
-    };
-    dispatch({
-      type: "LOGIN_SUCCESS",
-      payload
+  dispatch(clearError());
+  return axios.post('login/', {
+      username,
+      password
+    }, options)
+    .then(res => {
+      dispatch({
+        type: "LOGIN_SUCCESS",
+        payload: res.data.res
+      });
+    })
+    .catch(err => {
+      dispatch(returnError(String(err), 401));
+      dispatch({
+        type: "LOGIN_FAILED"
+      });
     });
-  }, 1000);
-
-  // submit a post request to '/api/auth/login'
-  // axios
-  //   .post('/api/auth/login', body, config)
-  //   .then(res => {
-  //     dispatch({
-  //       type: LOGIN_SUCCESS,
-  //       payload: res.data
-  //     });
-  //     // return the res promise in case any other place needs it
-  //     dispatch(push('/'));
-  //     return res;
-  //   })
-  //   .catch(err => {
-  //     dispatch(
-  //       returnErrors(
-  //         err.response.data.message,
-  //         err.response.status,
-  //         'LOGIN_FAIL'
-  //       )
-  //     );
-  //     dispatch({
-  //       type: LOGIN_FAIL
-  //     });
-  //   });
 };
 
 export const logout = () => (dispatch, getState) => {
-  dispatch({
-    type: "LOGOUT_SUCCESS"
-  });
+  dispatch(clearError());
+  return axios.post("logout/", {}, {
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': getState().auth.token
+    }
+  })
+    .then(res => {
+      dispatch({
+        type: "LOGOUT_SUCCESS"
+      });
+    })
+    .catch(err => {
+      dispatch(returnError("Logout failed", 500));
+    })
 };
 
 export const register = ({

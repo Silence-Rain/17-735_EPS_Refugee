@@ -14,8 +14,8 @@ class LoginForm extends React.Component {
     this.state = {
       isLogin: false,
       err: {
-        msg: "",
-        status: 0
+        msg: null,
+        status: null
       }
     }
   }
@@ -26,15 +26,19 @@ class LoginForm extends React.Component {
         isLogin: store.getState().auth.isAuthenticated,
         err: store.getState().error
       })
-    });
+    })
   }
 
   onFinish = values => {
-    console.log('Received values of form: ', values);
     store.dispatch(login({...values}))
-    if (this.state.err.status === 400) {
-      message.error(this.state.err.msg)
-    }
+      .then(res => {
+        if (this.state.err.status) {
+          message.error(this.state.err.msg)
+        }
+      })
+      .catch(err => {
+        message.error("Network error")
+      })
   };
 
   render () {

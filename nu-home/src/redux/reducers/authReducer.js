@@ -20,7 +20,7 @@ export default (state = initialState, action) => {
     case "REGISTER_FAIL":
     case "LOGOUT_SUCCESS":
       Cookies.remove('csrftoken');
-      Cookies.remove('sessionId');
+      Cookies.remove('sessionid');
       return {
         ...state,
         token: null,

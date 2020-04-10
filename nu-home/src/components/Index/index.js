@@ -1,6 +1,6 @@
 import React from 'react';
 import "./index.css";
-import { Layout, Menu, Dropdown, Avatar, Space } from 'antd';
+import { Layout, Menu, Dropdown, Avatar, Space, message } from 'antd';
 import { AppstoreOutlined, MailOutlined, IdcardOutlined, DownOutlined ,UserAddOutlined, UserOutlined } from '@ant-design/icons';
 import { ViewRouter } from '../../routes.js'
 import { Link, Redirect } from 'react-router-dom';
@@ -14,50 +14,53 @@ class Index extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
-      stores: {
-        isAuthenticated: true,
-        user: {
-          data:{
-            username: "",
-            type: ""
-          }
-        }
-      },
       menuDropdown: (
         <Menu>
           <Menu.Item key="settings">
             <Link to={`/home/settings`}>Settings</Link>
           </Menu.Item>
           <Menu.Divider />
-          <Menu.Item key="logout" onClick={this.handleLogout} style={{ color: '#ff4d4f' }}>Logout</Menu.Item>
+          <Menu.Item key="logout" onClick={this.onLogout} style={{ color: '#ff4d4f' }}>Logout</Menu.Item>
         </Menu>
       )
-    }
-  } 
+    };
+  }
+
+  componentWillMount () {
+    this.setState({
+      stores: store.getState()
+    })
+  }
 
   componentDidMount () {
-    this.setState({
-      stores: store.getState().auth
-    })
     store.subscribe(() => {
       this.setState({
-        stores: store.getState().auth
+        stores: store.getState()
       })
     });
   }
 
-  handleLogout () {
-    store.dispatch(logout());
+  onLogout = () => {
+    store.dispatch(logout())
+      .then(res => {
+        if (this.state.stores.error.status) {
+          message.error(this.state.stores.error.msg)
+        }
+      })
+      .catch(err => {
+        console.log(err)
+        message.error("Network error in Logout")
+      })
   }
 
   menuDisplay () {
-    return this.state.stores.isAuthenticated ? (
+    return this.state.stores.auth.isAuthenticated ? (
       <Menu theme="dark" mode="horizontal" className="settings" selectable={false}>
         <Menu.Item key="user">
           <Dropdown overlay={this.state.menuDropdown}>
             <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
               <Space>
-                {`Hi, ${this.state.stores.user.username}`} 
+                {`Hi, ${this.state.stores.auth.user.username}`} 
                 <Avatar style={{ backgroundColor: '#87d068' }} icon={<UserOutlined />} />
                 <DownOutlined />
               </Space>
@@ -68,7 +71,7 @@ class Index extends React.Component {
   }
 
   render () {
-    if (!this.state.stores.isAuthenticated) {
+    if (!this.state.stores.auth.isAuthenticated) {
       return (<Redirect to="/login" />);
     } else {
     return (
@@ -105,30 +108,30 @@ class Index extends React.Component {
                   Forum
                 </span>
               }
-              disabled={!this.state.stores.user.isVerified}
+              disabled={!this.state.stores.auth.user.isVerified}
             >
-              <Menu.Item key="important" disabled={!this.state.stores.user.isVerified}>
+              <Menu.Item key="important" disabled={!this.state.stores.auth.user.isVerified}>
                 <Link to={`${this.props.match.path}/forum/important`}>Important!</Link>
               </Menu.Item>
-              <Menu.Item key="social" disabled={!this.state.stores.user.isVerified}>
+              <Menu.Item key="social" disabled={!this.state.stores.auth.user.isVerified}>
                 <Link to={`${this.props.match.path}/forum/social`}>Social</Link>
               </Menu.Item>
-              <Menu.Item key="jobs" disabled={!this.state.stores.user.isVerified}>
+              <Menu.Item key="jobs" disabled={!this.state.stores.auth.user.isVerified}>
                 <Link to={`${this.props.match.path}/forum/jobs`}>Jobs</Link>
               </Menu.Item>
-              <Menu.Item key="accomodation" disabled={!this.state.stores.user.isVerified}>
+              <Menu.Item key="accomodation" disabled={!this.state.stores.auth.user.isVerified}>
                 <Link to={`${this.props.match.path}/forum/accomodation`}>Accomodation</Link>
               </Menu.Item>
-              <Menu.Item key="resources" disabled={!this.state.stores.user.isVerified}>
+              <Menu.Item key="resources" disabled={!this.state.stores.auth.user.isVerified}>
                 <Link to={`${this.props.match.path}/forum/resources`}>Resources</Link>
               </Menu.Item>
-              <Menu.Item key="other" disabled={!this.state.stores.user.isVerified}>
+              <Menu.Item key="other" disabled={!this.state.stores.auth.user.isVerified}>
                 <Link to={`${this.props.match.path}/forum/other`}>Other</Link>
               </Menu.Item>
             </SubMenu>
 
             { 
-              this.state.stores.user.type !== "refugee" ? (
+              this.state.stores.auth.user.user_type !== "Refugee" ? (
                 <Menu.Item key="status">
                   <span>
                     <IdcardOutlined />
@@ -139,7 +142,7 @@ class Index extends React.Component {
             }
 
             { 
-              this.state.stores.user.type === "admin" ? (
+              this.state.stores.auth.user.user_type === "admin" ? (
                 <Menu.Item key="reg_ngo">
                   <span>
                     <UserAddOutlined />
