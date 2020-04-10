@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  Switch,
-  Route,
-  Redirect
-} from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import Index from './components/Index';
 import Login from './components/Login';
 import Register from './components/Register';
@@ -12,28 +8,28 @@ import Forum from './components/Forum';
 import DirectMessage from './components/DirectMessage';
 import RefugeeStatus from './components/RefugeeStatus';
 import Settings from './components/Settings';
+import store from './redux/store'
 
-// let isAuthenticated = true
+const PrivateRoute = ({ children, ...rest }) => {
+  return (
+    <Route
+      {...rest}
+      render={({ location }) =>
+        store.getState().auth.isAuthenticated ? children : (<Redirect to={"/login"}/>)
+      }
+    />
+  );
+}
 
-// let PrivateRoute = ({ children, ...rest }) => {
-//   return (
-//     <Route
-//       {...rest}
-//       render={({ location }) =>
-//         props.isAuthenticated ? (
-//           children
-//         ) : (
-//           <Redirect
-//             to={{
-//               pathname: "/login",
-//               state: { from: location }
-//             }}
-//           />
-//         )
-//       }
-//     />
-//   );
-// }
+const NoMatch = () => {
+  return (
+    <div style={{ textAlign: "center" }}>
+      <h1>
+        404 Not Found: Invalid URL
+      </h1>
+    </div>
+  );
+}
 
 const MainRouter = () => {
   return (
@@ -47,7 +43,12 @@ const MainRouter = () => {
       </Route>
       <Route exact path='/login' component={Login} />
       <Route exact path='/register' component={Register} />    
-      <Route path='/home' component={Index} />
+      <PrivateRoute path='/home'>
+        <Index />
+      </PrivateRoute>
+      <Route path="*">
+        <NoMatch />
+      </Route>
     </Switch>
   )
 }
@@ -55,18 +56,21 @@ const MainRouter = () => {
 const ViewRouter = (props) => {
   return (
     <Switch>
-      <Route exact path={`${props.match.path}`}>
+      <PrivateRoute exact path={`${props.match.path}`}>
         <Redirect 
           to={{
             pathname: `${props.match.path}/dm`
           }}
         />
+      </PrivateRoute>
+      <PrivateRoute exact path={`${props.match.path}/forum/:category`} component={Forum} />
+      <PrivateRoute exact path={`${props.match.path}/dm`} component={DirectMessage} />
+      <PrivateRoute exact path={`${props.match.path}/status`} component={RefugeeStatus} />
+      <PrivateRoute exact path={`${props.match.path}/settings`} component={Settings} />
+      <PrivateRoute exact path={`${props.match.path}/register_ngo`} component={RegisterNGO} />
+      <Route path="*">
+        <NoMatch />
       </Route>
-      <Route exact path={`${props.match.path}/forum/:category`} component={Forum} />
-      <Route exact path={`${props.match.path}/dm`} component={DirectMessage} />
-      <Route exact path={`${props.match.path}/status`} component={RefugeeStatus} />
-      <Route exact path={`${props.match.path}/settings`} component={Settings} />
-      <Route exact path={`${props.match.path}/register_ngo`} component={RegisterNGO} />
     </Switch>
   )
 }

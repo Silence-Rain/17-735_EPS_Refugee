@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { returnError, clearError } from './errorAction';
-import api from "../../api.js"
+import api from "../../api"
 
 export const login = ({ 
   username, 

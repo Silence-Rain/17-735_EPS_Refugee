@@ -3,7 +3,7 @@ import "./index.css";
 import { Layout, Menu, Dropdown, Avatar, Space, message } from 'antd';
 import { AppstoreOutlined, MailOutlined, IdcardOutlined, DownOutlined ,UserAddOutlined, UserOutlined } from '@ant-design/icons';
 import { ViewRouter } from '../../routes.js'
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Redirect, withRouter } from 'react-router-dom';
 import store from '../../redux/store';
 import { logout } from '../../redux/actions/authAction';
 
@@ -14,6 +14,19 @@ class Index extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
+      stores: {
+        auth: {
+          user: {
+            username: null,
+            user_type: null,
+            isVerified: false
+          }
+        },
+        error: {
+          msg: null,
+          status: null
+        }
+      },
       menuDropdown: (
         <Menu>
           <Menu.Item key="settings">
@@ -26,18 +39,19 @@ class Index extends React.Component {
     };
   }
 
-  componentWillMount () {
+  componentDidMount () {
     this.setState({
       stores: store.getState()
     })
-  }
-
-  componentDidMount () {
-    store.subscribe(() => {
+    this.unsubscribe = store.subscribe(() => {
       this.setState({
         stores: store.getState()
       })
     });
+  }
+
+  componentWillUnmount () {
+    this.unsubscribe();
   }
 
   onLogout = () => {
@@ -46,9 +60,9 @@ class Index extends React.Component {
         if (this.state.stores.error.status) {
           message.error(this.state.stores.error.msg)
         }
+        this.props.history.replace("/login")
       })
       .catch(err => {
-        console.log(err)
         message.error("Network error in Logout")
       })
   }
@@ -71,9 +85,6 @@ class Index extends React.Component {
   }
 
   render () {
-    if (!this.state.stores.auth.isAuthenticated) {
-      return (<Redirect to="/login" />);
-    } else {
     return (
       <Layout>
 
@@ -164,7 +175,6 @@ class Index extends React.Component {
       </Layout>
     )
   }
-  }
 }
 
-export default Index;
+export default withRouter(Index);

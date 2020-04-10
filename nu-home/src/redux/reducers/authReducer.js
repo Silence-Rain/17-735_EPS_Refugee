@@ -2,7 +2,11 @@ import Cookies from 'js-cookie';
 
 const initialState = {
   token: null,
-  user: null,
+  user: {
+    username: null,
+    user_type: null,
+    isVerified: false
+  },
   isAuthenticated: false
 };
 
@@ -24,7 +28,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         token: null,
-        user: null,
+        user: {
+          username: null,
+          user_type: null,
+          isVerified: false
+        },
         isAuthenticated: false
       };
     default:

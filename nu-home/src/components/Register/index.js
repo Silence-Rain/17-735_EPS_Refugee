@@ -65,12 +65,16 @@ class Register extends React.Component {
   }
 
   componentDidMount () {
-    store.subscribe(() => {
+    this.unsubscribe = store.subscribe(() => {
       this.setState({
         isLogin: store.getState().auth.isAuthenticated,
         err: store.getState().error
       })
     })
+  }
+
+  componentWillUnmount () {
+    this.unsubscribe();
   }
 
   onFinish = values => {
@@ -79,6 +83,7 @@ class Register extends React.Component {
         if (this.state.err.status) {
           message.error(this.state.err.msg)
         }
+        this.props.history.replace("/home")
       })
       .catch(err => {
         message.error("Network error")
@@ -86,129 +91,125 @@ class Register extends React.Component {
   };
 
   render () {
-    if (this.state.isLogin) {
-      return <Redirect to='/home' />
-    } else {
-      return (
-        <Layout>
+    return (
+      <Layout>
 
-          <Header>
-            <div className="logo">
-              <p>nuHome <span style={{marginLeft: '10px', fontSize: '14px'}}>by Refugee Group</span></p>
-            </div>
-          </Header>
+        <Header>
+          <div className="logo">
+            <p>nuHome <span style={{marginLeft: '10px', fontSize: '14px'}}>by Refugee Group</span></p>
+          </div>
+        </Header>
 
-          <Layout className="main-layout">
-            <Content className="main-content">
-              <div style={{ width: "90%" }}>
-                <h1>Sign up</h1>
+        <Layout className="main-layout">
+          <Content className="main-content">
+            <div style={{ width: "90%" }}>
+              <h1>Sign up</h1>
 
-                <Form
-                  {...formItemLayout}
-                  name="register"
-                  onFinish={this.onFinish}
-                  scrollToFirstError
+              <Form
+                {...formItemLayout}
+                name="register"
+                onFinish={this.onFinish}
+                scrollToFirstError
+              >
+                <Form.Item
+                  name="username"
+                  label="Username"
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Please input your username!',
+                    },
+                  ]}
                 >
-                  <Form.Item
-                    name="username"
-                    label="Username"
-                    rules={[
-                      {
-                        required: true,
-                        message: 'Please input your username!',
+                  <Input />
+                </Form.Item>
+
+                <Form.Item
+                  name="password"
+                  label="Password"
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Please input your password!',
+                    },
+                  ]}
+                  hasFeedback
+                >
+                  <Input.Password />
+                </Form.Item>
+
+                <Form.Item
+                  name="confirm"
+                  label="Confirm Password"
+                  dependencies={['password']}
+                  hasFeedback
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Please confirm your password!',
+                    },
+                    ({ getFieldValue }) => ({
+                      validator(rule, value) {
+                        if (!value || getFieldValue('password') === value) {
+                          return Promise.resolve();
+                        }
+
+                        return Promise.reject('The two passwords that you entered do not match!');
                       },
-                    ]}
-                  >
-                    <Input />
-                  </Form.Item>
+                    }),
+                  ]}
+                >
+                  <Input.Password />
+                </Form.Item>
 
-                  <Form.Item
-                    name="password"
-                    label="Password"
-                    rules={[
-                      {
-                        required: true,
-                        message: 'Please input your password!',
-                      },
-                    ]}
-                    hasFeedback
+                <Form.Item
+                  name="region" 
+                  label="Current Region" 
+                  rules={[
+                    { 
+                      required: true,
+                      message: 'Please select your current region!',
+                    }
+                  ]}
+                >
+                  <Select
+                    showSearch
                   >
-                    <Input.Password />
-                  </Form.Item>
+                    {
+                      countries.length && countries.map(item => (
+                        <Option key={item} value={item}>{item}</Option>
+                      )) 
+                    }
+                  </Select>
+                </Form.Item>
 
-                  <Form.Item
-                    name="confirm"
-                    label="Confirm Password"
-                    dependencies={['password']}
-                    hasFeedback
-                    rules={[
-                      {
-                        required: true,
-                        message: 'Please confirm your password!',
-                      },
-                      ({ getFieldValue }) => ({
-                        validator(rule, value) {
-                          if (!value || getFieldValue('password') === value) {
-                            return Promise.resolve();
-                          }
-
-                          return Promise.reject('The two passwords that you entered do not match!');
-                        },
-                      }),
-                    ]}
-                  >
-                    <Input.Password />
-                  </Form.Item>
-
-                  <Form.Item
-                    name="region" 
-                    label="Current Region" 
-                    rules={[
-                      { 
-                        required: true,
-                        message: 'Please select your current region!',
-                      }
-                    ]}
-                  >
-                    <Select
-                      showSearch
-                    >
-                      {
-                        countries.length && countries.map(item => (
-                          <Option key={item} value={item}>{item}</Option>
-                        )) 
-                      }
-                    </Select>
-                  </Form.Item>
-
-                  <Form.Item
-                    {...tailFormItemLayout}
-                  >
-                    If you have one, please upload your government issued ID: <br/>
-                    <Upload {...id_props}>
-                      <Button>
-                        <UploadOutlined /> Click to Upload
-                      </Button>
-                    </Upload>
-                  </Form.Item>
-
-                  <Form.Item
-                    {...tailFormItemLayout}
-                  >
-                    <Button type="primary" htmlType="submit" className="login-form-button">
-                      Register
+                <Form.Item
+                  {...tailFormItemLayout}
+                >
+                  If you have one, please upload your government issued ID: <br/>
+                  <Upload {...id_props}>
+                    <Button>
+                      <UploadOutlined /> Click to Upload
                     </Button>
-                    <Link style={{marginLeft: 10}} to="/login">Back to Login</Link>
-                  </Form.Item>
-                </Form>
+                  </Upload>
+                </Form.Item>
 
-              </div>
-            </Content>
-          </Layout>
+                <Form.Item
+                  {...tailFormItemLayout}
+                >
+                  <Button type="primary" htmlType="submit" className="login-form-button">
+                    Register
+                  </Button>
+                  <Link style={{marginLeft: 10}} to="/login">Back to Login</Link>
+                </Form.Item>
+              </Form>
 
+            </div>
+          </Content>
         </Layout>
-      );
-    };
+
+      </Layout>
+    );
   }
 };
 
