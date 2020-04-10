@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { returnError, clearError } from './errorAction';
 import api from "../../api"
 
@@ -47,6 +46,7 @@ export const register = ({
   password,
   region
 }) => dispatch => {
+  dispatch(clearError());
   return api.post('/registration/', {
       username,
       password,

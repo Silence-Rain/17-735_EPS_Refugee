@@ -3,7 +3,7 @@ import "./index.css";
 import { Layout, Menu, Dropdown, Avatar, Space, message } from 'antd';
 import { AppstoreOutlined, MailOutlined, IdcardOutlined, DownOutlined ,UserAddOutlined, UserOutlined } from '@ant-design/icons';
 import { ViewRouter } from '../../routes.js'
-import { Link, Redirect, withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import store from '../../redux/store';
 import { logout } from '../../redux/actions/authAction';
 
@@ -27,6 +27,7 @@ class Index extends React.Component {
           status: null
         }
       },
+      isVerified: false,
       menuDropdown: (
         <Menu>
           <Menu.Item key="settings">
@@ -41,7 +42,8 @@ class Index extends React.Component {
 
   componentDidMount () {
     this.setState({
-      stores: store.getState()
+      stores: store.getState(),
+      isVerified: store.getState().auth.user.user_type !== "refugee" || store.getState().auth.user.isVerified
     })
     this.unsubscribe = store.subscribe(() => {
       this.setState({
@@ -119,30 +121,31 @@ class Index extends React.Component {
                   Forum
                 </span>
               }
-              disabled={!this.state.stores.auth.user.isVerified}
+              disabled={!this.state.isVerified}
             >
-              <Menu.Item key="important" disabled={!this.state.stores.auth.user.isVerified}>
+              <Menu.Item key="important" disabled={!this.state.isVerified}>
                 <Link to={`${this.props.match.path}/forum/important`}>Important!</Link>
               </Menu.Item>
-              <Menu.Item key="social" disabled={!this.state.stores.auth.user.isVerified}>
+              <Menu.Item key="social" disabled={!this.state.isVerified}>
                 <Link to={`${this.props.match.path}/forum/social`}>Social</Link>
               </Menu.Item>
-              <Menu.Item key="jobs" disabled={!this.state.stores.auth.user.isVerified}>
+              <Menu.Item key="jobs" disabled={!this.state.isVerified}>
                 <Link to={`${this.props.match.path}/forum/jobs`}>Jobs</Link>
               </Menu.Item>
-              <Menu.Item key="accomodation" disabled={!this.state.stores.auth.user.isVerified}>
+              <Menu.Item key="accomodation" disabled={!this.state.isVerified}>
                 <Link to={`${this.props.match.path}/forum/accomodation`}>Accomodation</Link>
               </Menu.Item>
-              <Menu.Item key="resources" disabled={!this.state.stores.auth.user.isVerified}>
+              <Menu.Item key="resources" disabled={!this.state.isVerified}>
                 <Link to={`${this.props.match.path}/forum/resources`}>Resources</Link>
               </Menu.Item>
-              <Menu.Item key="other" disabled={!this.state.stores.auth.user.isVerified}>
+              <Menu.Item key="other" disabled={!this.state.isVerified}>
                 <Link to={`${this.props.match.path}/forum/other`}>Other</Link>
               </Menu.Item>
             </SubMenu>
 
             { 
-              this.state.stores.auth.user.user_type !== "Refugee" ? (
+              (this.state.stores.auth.user.user_type === "ngo_worker" 
+                || this.state.stores.auth.user.user_type === "ngo_admin") ? (
                 <Menu.Item key="status">
                   <span>
                     <IdcardOutlined />
@@ -152,8 +155,8 @@ class Index extends React.Component {
               ) : (<></>)
             }
 
-            { 
-              this.state.stores.auth.user.user_type === "admin" ? (
+            {
+              this.state.stores.auth.user.user_type === "ngo_admin" ? (
                 <Menu.Item key="reg_ngo">
                   <span>
                     <UserAddOutlined />

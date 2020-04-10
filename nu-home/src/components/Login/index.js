@@ -1,7 +1,7 @@
 import React from "react";
 import { Layout, Form, Input, Button, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import { Link, Redirect, withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import store from '../../redux/store';
 import { login } from '../../redux/actions/authAction';
 import "./index.css";

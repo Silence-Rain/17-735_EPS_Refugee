@@ -1,7 +1,7 @@
 import React from 'react';
 import { Layout, Form, Input, Select, Button, Upload, message } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import store from '../../redux/store';
 import { register } from '../../redux/actions/authAction';
 import "./index.css";
@@ -213,4 +213,4 @@ class Register extends React.Component {
   }
 };
 
-export default Register;
+export default withRouter(Register);
