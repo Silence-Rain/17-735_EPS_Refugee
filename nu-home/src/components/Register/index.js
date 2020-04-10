@@ -56,19 +56,33 @@ class Register extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
-      isLogin: false
+      isLogin: false,
+      err: {
+        msg: null,
+        status: null
+      }
     }
   }
 
   componentDidMount () {
     store.subscribe(() => {
-      this.setState({isLogin: store.getState().auth.isAuthenticated})
-    });
+      this.setState({
+        isLogin: store.getState().auth.isAuthenticated,
+        err: store.getState().error
+      })
+    })
   }
 
   onFinish = values => {
-    console.log('Received values of form: ', values);
     store.dispatch(register({...values}))
+      .then(res => {
+        if (this.state.err.status) {
+          message.error(this.state.err.msg)
+        }
+      })
+      .catch(err => {
+        message.error("Network error")
+      })
   };
 
   render () {
@@ -144,27 +158,6 @@ class Register extends React.Component {
                     ]}
                   >
                     <Input.Password />
-                  </Form.Item>
-
-                  <Form.Item
-                    name="origin" 
-                    label="Country of Origin" 
-                    rules={[
-                      { 
-                        required: true,
-                        message: 'Please select your country of origin!',
-                      }
-                    ]}
-                  >
-                    <Select
-                      showSearch
-                    >
-                      {
-                        countries.length && countries.map(item => (
-                          <Option key={item} value={item}>{item}</Option>
-                        )) 
-                      }
-                    </Select>
                   </Form.Item>
 
                   <Form.Item

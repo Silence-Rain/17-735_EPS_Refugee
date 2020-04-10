@@ -10,7 +10,10 @@ const options = {
   withCredentials: true,
 }
 
-export const login = ({ username, password }) => dispatch => {
+export const login = ({ 
+  username, 
+  password 
+}) => dispatch => {
   dispatch(clearError());
   return axios.post('login/', {
       username,
@@ -52,54 +55,26 @@ export const logout = () => (dispatch, getState) => {
 export const register = ({
   username,
   password,
-  origin,
   region
 }) => dispatch => {
-  // // Request body
-  // const body = JSON.stringify({
-  // });
-
-  setTimeout(() => {
-    const payload = {
-      username: username,
-      type: 'refugee',
-      isVerified: false,
-      avatar: 1,
-      bio: "Hello"
-    };
-    dispatch({
-      type: "REGISTER_SUCCESS",
-      payload
+  return axios.post('registration/', {
+      username,
+      password,
+      region
+    }, options)
+    .then(res => {
+      dispatch({
+        type: "REGISTER_SUCCESS",
+        payload: res.data.res
+      });
+    })
+    .catch(err => {
+      dispatch(returnError(String(err), 400));
+      dispatch({
+        type: "REGISTER_FAILED"
+      });
     });
-  }, 1000);
-
-  // // post the registration details to the backend
-  // axios
-  //   .post('/api/auth/register', body, config)
-  //   .then(res => {
-  //     dispatch({
-  //       type: REGISTER_SUCCESS,
-  //       payload: res.data
-  //     });
-  //     // redirect user to the home page after successful registration
-  //     dispatch(push('/'));
-  //   })
-  //   .catch(err => {
-  //     dispatch(
-  //       returnErrors(
-  //         err.response.data.message,
-  //         err.response.status,
-  //         'REGISTER_FAIL'
-  //       )
-  //     );
-  //     dispatch({
-  //       type: REGISTER_FAIL
-  //     });
-  //   });
 };
-
-
-
 
 // /**
 //  * A common utility function for setting the authentication header

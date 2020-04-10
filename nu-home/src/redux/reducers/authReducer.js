@@ -16,8 +16,8 @@ export default (state = initialState, action) => {
         user: action.payload,
         token: Cookies.get("csrftoken"),
       };
-    case "LOGIN_FAIL":
-    case "REGISTER_FAIL":
+    case "LOGIN_FAILED":
+    case "REGISTER_FAILED":
     case "LOGOUT_SUCCESS":
       Cookies.remove('csrftoken');
       Cookies.remove('sessionid');
