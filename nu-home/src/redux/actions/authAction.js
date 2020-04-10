@@ -1,24 +1,16 @@
 import axios from 'axios';
 import { returnError, clearError } from './errorAction';
-//import api from "../../api.js"
-
-const options = {
-  baseURL: 'http://localhost/api/',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  withCredentials: true,
-}
+import api from "../../api.js"
 
 export const login = ({ 
   username, 
   password 
 }) => dispatch => {
   dispatch(clearError());
-  return axios.post('login/', {
+  return api.post('/login/', {
       username,
       password
-    }, options)
+    })
     .then(res => {
       dispatch({
         type: "LOGIN_SUCCESS",
@@ -35,10 +27,8 @@ export const login = ({
 
 export const logout = () => (dispatch, getState) => {
   dispatch(clearError());
-  return axios.post("logout/", {}, {
-    ...options,
+  return api.post("/logout/", {}, {
     headers: {
-      'Content-Type': 'application/json',
       'X-CSRFToken': getState().auth.token
     }
   })
@@ -57,11 +47,11 @@ export const register = ({
   password,
   region
 }) => dispatch => {
-  return axios.post('registration/', {
+  return api.post('/registration/', {
       username,
       password,
       region
-    }, options)
+    })
     .then(res => {
       dispatch({
         type: "REGISTER_SUCCESS",
@@ -75,28 +65,3 @@ export const register = ({
       });
     });
 };
-
-// /**
-//  * A common utility function for setting the authentication header
-//  * Since each requests other than login and register needs authentication,
-//  * this function sets the "Authorization" header to the JWT value stored in
-//  * the auth state
-//  * @param {*} getState
-//  */
-// export const authTokenConfig = getState => {
-//   // Get token from localstorage
-//   const token = getState().auth.token;
-//   // Headers
-//   const config = {
-//     headers: {
-//       'Content-type': 'application/json'
-//     }
-//   };
-
-//   // If jwt token presented, add to headers
-//   if (token) {
-//     config.headers['Authorization'] = `Bearer ${token}`;
-//   }
-
-//   return config;
-// };
