@@ -6,23 +6,7 @@ import store from '../../redux/store';
 
 class RefugeeStatus extends React.Component {
   state = {
-    data: [
-      {
-        key: '1',
-        username: 'John Brown',
-        id: true
-      },
-      {
-        key: '2',
-        username: 'Silence',
-        id: false
-      },
-      {
-        key: '3',
-        username: 'Daniel',
-        id: true
-      },
-    ],
+    data: [],
     columns: [
       {
         title: 'Username',
@@ -69,7 +53,7 @@ class RefugeeStatus extends React.Component {
         })
       })
       .catch(err => {
-        message.error("Load RefugeeStatus Failed!")
+        message.error(`Load RefugeeStatus failed!: ${err.response.data.res.message}`)
       })
   }
 
@@ -87,13 +71,13 @@ class RefugeeStatus extends React.Component {
       }
     })
       .then(res => {
-        message.info("Verification Success!")
+        message.info("Verification success!")
         this.setState({
           data: this.state.data.filter(val => { val !== username })
         })
       })
       .catch(err => {
-        message.error("Verification Failed!")
+        message.error(`Verification failed!: ${err.response.data.res.message}`)
       })
   }
 

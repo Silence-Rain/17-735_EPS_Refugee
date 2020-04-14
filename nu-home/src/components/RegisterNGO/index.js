@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, Select, Button, Switch } from 'antd';
+import { Form, Input, Select, Button, Switch, message } from 'antd';
 import "./index.css"
 import store from '../../redux/store';
 import api from '../../api';
@@ -11,22 +11,24 @@ const countries = ["Afghanistan","Albania","Algeria","Andorra","Angola","Antigua
 class RegisterNGO extends React.Component {
 
   // Handler for "register your worker" button
-  // STILL IN PROGRESS
   onFinish = values => {
-    console.log('Received values of form: ', values);
-    // let url = values.isWorker ? "/ngo_registration/" : "/ngo_admin_registration/";
-    // let {username, password, region} = values;
-    // api.post(url, {
-    //   username,
-    //   password,
-    //   region
-    // })
-    // .then(res => {
-    //   console.log(res)
-    // })
-    // .catch(err => {
-    //   console.log(err)
-    // });
+    let url = values.isWorker ? "/ngo_registration/" : "/ngo_admin_registration/";
+    let {username, password, region} = values;
+    api.post(url, {
+      username,
+      password,
+      region
+    }, {
+      headers: {
+        'X-CSRFToken': store.getState().auth.token
+      }
+    })
+    .then(res => {
+      message.info("Registration success!")
+    })
+    .catch(err => {
+      message.error(`Registration failed!: ${err.response.data.res.message}`)
+    });
   };
 
   // Layout of RegisterNGO component
@@ -111,14 +113,12 @@ class RegisterNGO extends React.Component {
             </Select>
           </Form.Item>
           
-          {/*
           <Form.Item
             name="isWorker" 
-            label="Simple worker?" 
+            label="User type" 
           >
-            <Switch defaultChecked />
+            <Switch checkedChildren="Worker" unCheckedChildren="Admin" defaultChecked />
           </Form.Item>
-          */}
 
           <Form.Item
           >
