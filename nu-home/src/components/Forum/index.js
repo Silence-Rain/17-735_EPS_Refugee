@@ -1,6 +1,6 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import { List, Avatar, Tag, Button, Modal, Form, Input, Select, Divider, message, Space } from 'antd';
+import { List, Avatar, Tag, Button, Modal, Form, Input, Select, Divider, message, Space, Popover } from 'antd';
 import store from '../../redux/store';
 import api from '../../api';
 
@@ -88,35 +88,7 @@ const PostCreateForm = ({ visible, onCreate, onCancel }) => {
 class Forum extends React.Component {
   state = {
     showModal: false,
-    data: [
-      {
-          "username": "hahahaha",
-          "post_id": 1,
-          "title": "Food Resources Nearby",
-          "content": "Free food distribution for refugees at Frobes Ave!",
-          "status": "unverified",
-          "category": "resources",
-          "date_time": 1586886758293
-      },
-      {
-          "username": "goat",
-          "post_id": 2,
-          "title": "Job Opportunities!",
-          "content": "Come get a job as a banker.",
-          "status": "verified",
-          "category": "important",
-          "date_time": 1586186758293
-      },
-      {
-          "username": "bear",
-          "post_id": 3,
-          "title": "New Gathering",
-          "content": "Gathering at Murray Ave!",
-          "status": "false",
-          "category": "social",
-          "date_time": 1586836758293
-      }
-    ]
+    data: []
   }
 
   componentDidMount () {
@@ -141,10 +113,11 @@ class Forum extends React.Component {
 
   onDelete = id => {
     api.delete("/delete_post/", {
-      "post_id": id
-    }, {
       headers: {
         'X-CSRFToken': store.getState().auth.token
+      },
+      data: {
+        "post_id": id
       }
     })
     .then(res => {
@@ -152,7 +125,11 @@ class Forum extends React.Component {
       this.loadPosts()
     })
     .catch(err => {
-      message.error(`Deletion failed!: ${err.response.data.res.message}`)
+      if (err.response.data.res) {
+        message.error(`Deletion failed!: ${err.response.data.res.message}`)
+      } else {
+        message.error(`Network error: ${err}`)
+      }
     });
   }
 
@@ -170,7 +147,11 @@ class Forum extends React.Component {
       this.loadPosts()
     })
     .catch(err => {
-      message.error(`Verification failed!: ${err.response.data.res.message}`)
+      if (err.response.data.res) {
+        message.error(`Verification failed!: ${err.response.data.res.message}`)
+      } else {
+        message.error(`Network error: ${err}`)
+      }
     });
   }
 
@@ -218,14 +199,26 @@ class Forum extends React.Component {
               key={item.post_id}
             >
               <List.Item.Meta
-                avatar={<Avatar src={item.avatar} />}
+                avatar={<Avatar src={`/assets/avatars/avatar${item.user.avatar}.png`} />}
                 title={
                   item.title
                   //<a href={item.href}>{item.title}</a>
                 }
                 description={
                   <div>
-                    <div>Author: {item.username}</div>
+                    <Popover 
+                      placement="topLeft"
+                      content={
+                        <div>
+                          <p>{`Username: ${item.user.username}`}</p>
+                          Avatar: <Avatar src={`/assets/avatars/avatar${item.user.avatar}.png`} />
+                          <p>{`Bio: ${item.user.bio}`}</p>
+                        </div>
+                      } 
+                      title="Author's Profile"
+                    >
+                      <div>Author: {item.user.username}</div>
+                    </Popover>
                     <div>
                       <Tag color={item.category === "important" ? "red" : "blue"}>{item.category}</Tag>
                       <Tag color={item.status === "verified" ? "green" : (item.status === "false" ? "orange" : null)}>{item.status}</Tag>
@@ -237,7 +230,7 @@ class Forum extends React.Component {
               <div style={{ margin: "20px 0" }}>
                 <Space>
                   {
-                    item.username === store.getState().auth.user.username ? 
+                    item.user.username === store.getState().auth.user.username ? 
                     <Button type="primary" danger onClick={() => { this.onDelete(item.post_id) }}>
                       Delete Post
                     </Button>

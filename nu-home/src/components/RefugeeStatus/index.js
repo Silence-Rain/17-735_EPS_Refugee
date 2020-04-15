@@ -49,7 +49,7 @@ class RefugeeStatus extends React.Component {
     })
       .then(res => {
         this.setState({
-          data: res.data.res.usernames
+          data: res.data.res.unverified_refugees
         })
       })
       .catch(err => {
