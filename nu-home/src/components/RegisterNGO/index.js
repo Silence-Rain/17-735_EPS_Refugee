@@ -13,7 +13,7 @@ class RegisterNGO extends React.Component {
   // Handler for "register your worker" button
   onFinish = values => {
     let url = values.isWorker ? "/ngo_registration/" : "/ngo_admin_registration/";
-    let {username, password, region} = values;
+    let { username, password, region } = values;
     api.post(url, {
       username,
       password,

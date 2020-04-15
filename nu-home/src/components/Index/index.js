@@ -153,10 +153,9 @@ class Index extends React.Component {
               </Menu.Item>
             </SubMenu>
 
-            {/*If the user is a refugee, then he/she can not access the refugee status page*/}
+            {/*Only NGO Workers can access the refugee status page*/}
             { 
-              (this.state.stores.auth.user.user_type === "ngo_worker" 
-                || this.state.stores.auth.user.user_type === "ngo_admin") ? (
+              this.state.stores.auth.user.user_type === "ngo_worker" ? (
                 <Menu.Item key="status">
                   <span>
                     <IdcardOutlined />
@@ -166,7 +165,7 @@ class Index extends React.Component {
               ) : (<></>)
             }
 
-          {/*Only admin can access the NGO registration page*/}
+            {/*Only admin can access the NGO registration page*/}
             {
               this.state.stores.auth.user.user_type === "ngo_admin" ? (
                 <Menu.Item key="reg_ngo">
