@@ -16,6 +16,7 @@ export default (state = initialState, action) => {
     // mark the user as "isAuthenticated" and store the user profile and the CSRF token for following requests
     case "LOGIN_SUCCESS":
     case "REGISTER_SUCCESS":
+    case "LOAD_SUCCESS":
       return {
         ...state,
         isAuthenticated: true,

@@ -19,6 +19,7 @@ class Index extends React.Component {
           user: {
             username: null,
             user_type: null,
+            avatar: 1,
             isVerified: false
           }
         },
@@ -84,7 +85,7 @@ class Index extends React.Component {
             <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
               <Space>
                 {`Hi, ${this.state.stores.auth.user.username}`} 
-                <Avatar style={{ backgroundColor: '#87d068' }} icon={<UserOutlined />} />
+                <Avatar src={`/assets/avatars/avatar${this.state.stores.auth.user.avatar}.png`} />
                 <DownOutlined />
               </Space>
             </a>

@@ -4,6 +4,7 @@ import { List, Avatar, Tag, Button, Modal, Form, Input, Select, Divider, message
 import store from '../../redux/store';
 import api from '../../api';
 
+const { Option } = Select;
 const categories = ["important", "social", "jobs", "accomodation", "resources", "other"]
 
 const PostCreateForm = ({ visible, onCreate, onCancel }) => {

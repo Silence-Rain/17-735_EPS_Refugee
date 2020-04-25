@@ -1,6 +1,23 @@
 import { returnError, clearError } from './errorAction';
 import api from "../../api"
 
+export const loadUser = () => (dispatch, getState) => {
+  dispatch(clearError());
+  return api.post("/get_user_profile/", {}, {
+    headers: {
+      'X-CSRFToken': getState().auth.token
+    }
+  })
+    .then(res => {
+      dispatch({
+        type: "LOAD_SUCCESS"
+      });
+    })
+    .catch(err => {
+      dispatch(returnError("Load profile failed", 500));
+    })
+}
+
 // Action creator for login
 // Dispatch the corresponding events to reducer, reducer will update the store accordingly
 export const login = ({ 

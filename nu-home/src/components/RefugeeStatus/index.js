@@ -73,7 +73,7 @@ class RefugeeStatus extends React.Component {
       .then(res => {
         message.info("Verification success!")
         this.setState({
-          data: this.state.data.filter(val => { val !== username })
+          data: this.state.data.filter(val => val !== username )
         })
       })
       .catch(err => {
