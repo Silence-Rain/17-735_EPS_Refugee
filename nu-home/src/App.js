@@ -15,11 +15,11 @@ class App extends React.Component {
           <Footer style={{ textAlign: 'center' }}>
             { "Copyright © EPS-Refugee 2020." }
             <Divider type="vertical" style={{ backgroundColor: "#000" }}/>
-            <a href="">Privacy Policy</a>
+            <a href="!#">Privacy Policy</a>
             <Divider type="vertical" style={{ backgroundColor: "#000" }}/>
-            <a href="">Cookies</a>
+            <a href="!#">Cookies</a>
             <Divider type="vertical" style={{ backgroundColor: "#000" }}/>
-            <a href="">Contact</a>
+            <a href="!#">Contact</a>
           </Footer>
         </Layout>
       </div>

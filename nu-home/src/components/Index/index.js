@@ -1,7 +1,7 @@
 import React from 'react';
 import "./index.css";
 import { Layout, Menu, Dropdown, Avatar, Space, message } from 'antd';
-import { AppstoreOutlined, MailOutlined, IdcardOutlined, DownOutlined ,UserAddOutlined, UserOutlined } from '@ant-design/icons';
+import { AppstoreOutlined, MailOutlined, IdcardOutlined, DownOutlined ,UserAddOutlined } from '@ant-design/icons';
 import { ViewRouter } from '../../routes.js'
 import { Link, withRouter } from 'react-router-dom';
 import store from '../../redux/store';
@@ -82,7 +82,7 @@ class Index extends React.Component {
       <Menu theme="dark" mode="horizontal" className="settings" selectable={false}>
         <Menu.Item key="user">
           <Dropdown overlay={this.state.menuDropdown}>
-            <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+            <a href="!#" className="ant-dropdown-link" onClick={e => e.preventDefault()}>
               <Space>
                 {`Hi, ${this.state.stores.auth.user.username}`} 
                 <Avatar src={`/assets/avatars/avatar${this.state.stores.auth.user.avatar}.png`} />

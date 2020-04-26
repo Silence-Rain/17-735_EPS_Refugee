@@ -108,7 +108,11 @@ class Forum extends React.Component {
       this.loadPosts()
     })
     .catch(err => {
-      message.error(`Creation failed!: ${err.response.data.res.message}`)
+      if (err.response.data.res) {
+        message.error(`Creation failed!: ${err.response.data.res.message}`)
+      } else {
+        message.error(`Network error: ${err}`)
+      }
     });
   }
 
@@ -166,7 +170,11 @@ class Forum extends React.Component {
       this.setState({ data: res.data.res })
     })
     .catch(err => {
-      message.error(`Load posts failed!: ${err.response.data.res.message}`)
+      if (err.response.data.res) {
+        message.error(`Load posts failed!: ${err.response.data.res.message}`)
+      } else {
+        message.error(`Network error: ${err}`)
+      }
     });
   }
 

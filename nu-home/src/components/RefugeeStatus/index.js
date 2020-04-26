@@ -18,7 +18,7 @@ class RefugeeStatus extends React.Component {
         key: 'document',
         render: (text, record) => (
           <span>
-            {record.document ? <a href={`${record.username}`} target="_blank">Download</a> : "Not Uploaded"}
+            {record.document ? <a href={`${record.username}`} target="_blank" rel="noopener noreferrer">Download</a> : "Not Uploaded"}
           </span>
         ),
       },
@@ -27,13 +27,13 @@ class RefugeeStatus extends React.Component {
         key: 'action',
         render: (text, record) => (
           <span>
-            <a onClick={() => {this.redirectToChat(record.username)}}>Chat</a>
+            <a href="!#" onClick={() => {this.redirectToChat(record.username)}}>Chat</a>
             <Divider type="vertical"/>
             <Popconfirm 
               title={`Confirm the identity of ${record.username}?`} 
               onConfirm={() => this.verifyRefugee(record.username)}
             >
-              <a href="#">Verify</a>
+              <a href="!#">Verify</a>
             </Popconfirm>
           </span>
         ),

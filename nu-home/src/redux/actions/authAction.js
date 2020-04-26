@@ -3,14 +3,15 @@ import api from "../../api"
 
 export const loadUser = () => (dispatch, getState) => {
   dispatch(clearError());
-  return api.post("/get_user_profile/", {}, {
+  return api.get("/get_user_profile/", {
     headers: {
       'X-CSRFToken': getState().auth.token
     }
   })
     .then(res => {
       dispatch({
-        type: "LOAD_SUCCESS"
+        type: "LOAD_SUCCESS",
+        payload: res.data.res
       });
     })
     .catch(err => {

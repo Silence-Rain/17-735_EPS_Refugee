@@ -1,29 +1,56 @@
 import React from "react";
-import { Avatar, Button, Space, Input, Divider, message } from "antd";
+import { Avatar, Button, Space, Input, Divider, Upload, message } from "antd";
+import { UploadOutlined } from '@ant-design/icons';
 import "./index.css";
 import store from '../../redux/store';
 import api from '../../api';
 import { loadUser, logout } from '../../redux/actions/authAction';
+import { withRouter } from 'react-router-dom';
+
+const id_props = {
+  name: 'document',
+  showUploadList: false,
+  customRequest: ({ file }) => {
+    const formData = new FormData();
+    formData.append("document", file)
+    api.post("/upload_document/", formData, {
+      headers: {
+        'X-CSRFToken': store.getState().auth.token,
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+    .then(res => {
+      message.success(`File upload success`);
+    })
+    .catch(err => {
+      message.error(`File upload failed.`);
+    });
+  }
+};
 
 class Settings extends React.Component {
-  state = {
-    user: {
-      username: null,
-      avatar: 0,
-      bio: ""
-    }
+  constructor (props) {
+    super(props);
+    this.state = {
+      user: {
+        username: null,
+        avatar: 0,
+        bio: ""
+      },
+      newBio: ""
+    };
   }
 
-  componentDidMount () {
+  componentWillMount () {
     this.setState({
-      user: store.auth.user
-    })
+      user: store.getState().auth.user
+    })  
   }
 
-  handleUpdateBio = value => {
+  handleUpdateBio = () => {
     api.put("/update_user_profile/", {
       "avatar": this.state.user.avatar,
-      "bio": value
+      "bio": this.state.newBio
     }, {
       headers: {
         'X-CSRFToken': store.getState().auth.token
@@ -33,15 +60,12 @@ class Settings extends React.Component {
       message.info("Update bio success!")
       store.dispatch(loadUser())
         .then(res => {
-          if (this.state.stores.error.status) {
-            message.error(this.state.stores.error.msg)
-          }
           this.setState({
-            user: store.auth.user
+            user: store.getState().auth.user
           })
         })
         .catch(err => {
-          message.error("Network error in Logout")
+          message.error("Network error in update bio")
         })
     })
     .catch(err => {
@@ -64,6 +88,7 @@ class Settings extends React.Component {
       }
     })
     .then(res => {
+      window.open(`http://${document.URL.split("/")[2]}/${res.data.res.url}`)
       console.log(res.data.res.url)
     })
     .catch(err => {
@@ -85,9 +110,6 @@ class Settings extends React.Component {
       message.info("Account deletion success! You will be logged out in 3 seconds...")
       store.dispatch(logout())
         .then(res => {
-          if (this.state.stores.error.status) {
-            message.error(this.state.stores.error.msg)
-          }
           this.props.history.replace("/login")
         })
         .catch(err => {
@@ -121,14 +143,36 @@ class Settings extends React.Component {
           </Space>
         </div>
 
-        <h4>Bio</h4>
-        <Input.TextArea rows={4} defaultValue={this.state.user.bio}/>
-        <Button type="primary" onClick={this.handleUpdateBio}>Save Bio</Button>
-        <Divider />
+        {
+          (this.state.user.user_type === "refugee" || this.state.user.user_type === "ngo_worker") ? (
+            <div>
+              <h4>Bio</h4>
+              <Input.TextArea rows={4} defaultValue={this.state.user.bio} onChange={e => {this.setState({newBio: e.target.value})}}/>
+              <Button type="primary" style={{ marginTop: "10px" }} onClick={this.handleUpdateBio}>Save Bio</Button>
+              <Divider />
+            </div>
+          ) : (<></>)
+        }
+
+        {
+          (this.state.user.user_type === "refugee" && this.state.user.isVerified === false) ? (
+            <div>
+              <h4>Please upload your government issued ID:</h4>
+              <Upload {...id_props}>
+                <Button>
+                  <UploadOutlined /> Click to Upload
+                </Button>
+              </Upload>
+              <Divider />
+            </div>
+          ) : (<></>)
+        }
+        
         <h4>Subject access request (SAR)</h4>
         <p>Description of SAR blah blah blah</p>
         <Button type="primary" onClick={this.handleSAR}>Initiate SAR</Button>
         <Divider />
+        
         <h4>Delete your account</h4>
         <p>Are you sure???!!!</p>
         <Button type="primary" danger onClick={this.handleDeleteAccount}>Delete account</Button>
@@ -138,4 +182,4 @@ class Settings extends React.Component {
   }
 }
 
-export default Settings;
+export default withRouter(Settings);

@@ -12,6 +12,7 @@ class RegisterNGO extends React.Component {
 
   // Handler for "register your worker" button
   onFinish = values => {
+    console.log(values)
     let url = values.isWorker ? "/ngo_registration/" : "/ngo_admin_registration/";
     let { username, password, region } = values;
     api.post(url, {
@@ -116,6 +117,7 @@ class RegisterNGO extends React.Component {
           <Form.Item
             name="isWorker" 
             label="User type" 
+            valuePropName="checked"
           >
             <Switch checkedChildren="Worker" unCheckedChildren="Admin" defaultChecked />
           </Form.Item>
