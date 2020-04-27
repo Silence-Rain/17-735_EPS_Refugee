@@ -101,10 +101,12 @@ class Index extends React.Component {
       <Layout>
 
       <Header>
-        <div className="logo">
-          <img src="/assets/logo.png" />
+        <div className="header-layout">
+          <div className="logo">
+            <img src="/assets/logo.png" alt="" />
+          </div>
+          {this.menuDisplay()}
         </div>
-        {this.menuDisplay()}
       </Header>
 
       <Layout style={{ padding: '10px 50px' }}>
@@ -112,55 +114,63 @@ class Index extends React.Component {
         <Sider breakpoint="xs" collapsedWidth="0" className="site-layout-content" width={250}>
           <Menu
             mode="inline"
-            defaultSelectedKeys={[(this.state.stores.auth.user.user_type === "refugee" ? 'dm' : 'forum')]}
+            defaultSelectedKeys={[{'refugee': 'dm', 'ngo_worker': 'forum', 'ngo_admin': 'reg_ngo'}[this.state.stores.auth.user.user_type]]}
             defaultOpenKeys={['forum']}
             style={{ height: '100%', borderRight: 0 }}
           >
-            <Menu.Item key="dm">
-              <span>
-                <MailOutlined />
-              </span>
-              <Link to={
-                `${this.props.match.path}/dm/${this.state.stores.auth.user.user_type === "refugee" ? this.state.stores.auth.user.assigned_ngo : "default"}`
-                }
-              >
-                Direct Message
-              </Link>
-            </Menu.Item>
+            {
+              this.state.stores.auth.user.user_type !== "ngo_admin" ? (
+                <Menu.Item key="dm">
+                  <span>
+                    <MailOutlined />
+                  </span>
+                  <Link to={
+                    `${this.props.match.path}/dm/${this.state.stores.auth.user.user_type === "refugee" ? this.state.stores.auth.user.assigned_ngo : "default"}`
+                    }
+                  >
+                    Direct Message
+                  </Link>
+                </Menu.Item>
+              ) : (<></>)
+            }
 
-          {/*If the user is an unverified refugee, then he/she can not access the forum page*/}
-            <SubMenu
-              key="forum"
-              title={
-                <span>
-                  <AppstoreOutlined />
-                  Forum
-                </span>
-              }
-              disabled={!this.state.isVerified}
-            >
-              <Menu.Item key="important" disabled={!this.state.isVerified}>
-                <Link to={`${this.props.match.path}/forum/important`}>Important!</Link>
-              </Menu.Item>
-              <Menu.Item key="social" disabled={!this.state.isVerified}>
-                <Link to={`${this.props.match.path}/forum/social`}>Social</Link>
-              </Menu.Item>
-              <Menu.Item key="jobs" disabled={!this.state.isVerified}>
-                <Link to={`${this.props.match.path}/forum/jobs`}>Jobs</Link>
-              </Menu.Item>
-              <Menu.Item key="accomodation" disabled={!this.state.isVerified}>
-                <Link to={`${this.props.match.path}/forum/accomodation`}>Accomodation</Link>
-              </Menu.Item>
-              <Menu.Item key="resources" disabled={!this.state.isVerified}>
-                <Link to={`${this.props.match.path}/forum/resources`}>Resources</Link>
-              </Menu.Item>
-              <Menu.Item key="other" disabled={!this.state.isVerified}>
-                <Link to={`${this.props.match.path}/forum/other`}>Other</Link>
-              </Menu.Item>
-            </SubMenu>
-
-            {/*Only NGO Workers can access the refugee status page*/}
+            {
+              // If the user is an unverified refugee, then he/she can not access the forum page
+              this.state.stores.auth.user.user_type !== "ngo_admin" ? (
+                <SubMenu
+                  key="forum"
+                  title={
+                    <span>
+                      <AppstoreOutlined />
+                      Forum
+                    </span>
+                  }
+                  disabled={!this.state.isVerified}
+                >
+                  <Menu.Item key="important" disabled={!this.state.isVerified}>
+                    <Link to={`${this.props.match.path}/forum/important`}>Important!</Link>
+                  </Menu.Item>
+                  <Menu.Item key="social" disabled={!this.state.isVerified}>
+                    <Link to={`${this.props.match.path}/forum/social`}>Social</Link>
+                  </Menu.Item>
+                  <Menu.Item key="jobs" disabled={!this.state.isVerified}>
+                    <Link to={`${this.props.match.path}/forum/jobs`}>Jobs</Link>
+                  </Menu.Item>
+                  <Menu.Item key="accomodation" disabled={!this.state.isVerified}>
+                    <Link to={`${this.props.match.path}/forum/accomodation`}>Accomodation</Link>
+                  </Menu.Item>
+                  <Menu.Item key="resources" disabled={!this.state.isVerified}>
+                    <Link to={`${this.props.match.path}/forum/resources`}>Resources</Link>
+                  </Menu.Item>
+                  <Menu.Item key="other" disabled={!this.state.isVerified}>
+                    <Link to={`${this.props.match.path}/forum/other`}>Other</Link>
+                  </Menu.Item>
+                </SubMenu>                
+              ) : (<></>)
+            }
+            
             { 
+              // Only NGO Workers can access the refugee status page
               this.state.stores.auth.user.user_type === "ngo_worker" ? (
                 <Menu.Item key="status">
                   <span>
@@ -171,8 +181,8 @@ class Index extends React.Component {
               ) : (<></>)
             }
 
-            {/*Only admin can access the NGO registration page*/}
             {
+              // Only admin can access the NGO registration page
               this.state.stores.auth.user.user_type === "ngo_admin" ? (
                 <Menu.Item key="reg_ngo">
                   <span>

@@ -118,14 +118,14 @@ class Register extends React.Component {
 
         <Header>
           <div className="logo">
-            <img src="/assets/logo.png" />
+            <img src="/assets/logo.png" alt="" />
           </div>
         </Header>
 
         <Layout className="main-layout">
           <Content className="main-content">
             <div style={{ width: "90%" }}>
-              <img src="/assets/logo_dark.png" className="center-logo"/>
+              <img src="/assets/logo_dark.png" alt="" className="center-logo"/>
               <h1>Sign up</h1>
 
               {this.notificationModal()}

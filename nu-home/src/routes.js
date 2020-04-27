@@ -59,9 +59,11 @@ const ViewRouter = (props) => {
       <PrivateRoute exact path={`${props.match.path}`}>
         <Redirect 
           to={{
-            pathname: store.getState().auth.user.user_type === "refugee" ? 
-            `${props.match.path}/dm/${store.getState().auth.user.assigned_ngo}`
-            : `${props.match.path}/forum/important`
+            pathname: {
+              "refugee": `${props.match.path}/dm/${store.getState().auth.user.assigned_ngo}`,
+              "ngo_worker": `${props.match.path}/forum/important`,
+              "ngo_admin": `${props.match.path}/register_ngo`
+            }[store.getState().auth.user.user_type]
           }}
         />
       </PrivateRoute>

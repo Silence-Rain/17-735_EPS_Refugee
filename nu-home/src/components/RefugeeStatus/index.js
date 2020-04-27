@@ -1,8 +1,10 @@
 import React from "react";
-import { Table, Popconfirm, Divider, Button, message } from 'antd';
+import { Table, Popconfirm, Divider, Button, Space, message } from 'antd';
+import { DownloadOutlined } from '@ant-design/icons';
 import { withRouter } from 'react-router-dom';
 import api from '../../api';
 import store from '../../redux/store';
+import './index.css';
 
 class RefugeeStatus extends React.Component {
   state = {
@@ -76,7 +78,7 @@ class RefugeeStatus extends React.Component {
       .then(res => {
         message.info("Verification success!")
         this.setState({
-          data: this.state.data.filter(val => val !== username )
+          data: this.state.data.filter(val => {console.log(val, username); return val !== username} )
         })
       })
       .catch(err => {
@@ -88,11 +90,26 @@ class RefugeeStatus extends React.Component {
       })
   }
 
+  downloadDecryption = () => {
+    window.open(`http://${document.URL.split("/")[2]}/downloads/decrypt.py`)
+  }
+
+  downloadDeletion = () => {
+    window.open(`http://${document.URL.split("/")[2]}/downloads/delete.py`)
+  }
+
   // Layout of RefugeeStatus component
   render () {
     return (
       <div>
       	<h2>RefugeeStatus </h2>
+        <div className="row-buttons">
+          <Space>
+            <Button type="primary" onClick={this.downloadDecryption}><DownloadOutlined/> Download decrypt script</Button>
+            <Button type="primary"  onClick={this.downloadDeletion}><DownloadOutlined/> Download secure deletion script</Button>
+          </Space>
+        </div>
+        <Divider/>
       	<Table columns={this.state.columns} dataSource={this.state.data} rowKey="username"/>
       </div>
     )

@@ -1,0 +1,5 @@
+.row-buttons {
+	display: flex;
+	flex-direction: row;
+	vertical-align: middle;
+}

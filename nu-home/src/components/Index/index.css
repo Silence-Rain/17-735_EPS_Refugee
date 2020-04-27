@@ -6,6 +6,16 @@
   min-height: 80vh;
 }
 
+.header-layout {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.logo {
+  width: 300px;
+}
+
 .logo img {
   height: 40px;
 }

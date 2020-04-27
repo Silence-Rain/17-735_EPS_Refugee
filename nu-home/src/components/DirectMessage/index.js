@@ -83,7 +83,7 @@ class DirectMessage extends React.Component {
       console.log(err)
     });
 
-    let baseURL = process.env.NODE_ENV === 'production' ? 'wss://www.silence-rain.com/chat/' : 'ws://localhost:8888/';
+    let baseURL = process.env.NODE_ENV === 'production' ? 'wss://www.silence-rain.com/chat/' : 'ws://localhost/chat/';
     this.ws = new WebSocket(baseURL);
     this.ws.onopen = () => {
       this.ws.send(JSON.stringify({
