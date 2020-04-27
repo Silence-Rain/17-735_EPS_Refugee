@@ -102,7 +102,7 @@ class Index extends React.Component {
 
       <Header>
         <div className="logo">
-          <p>nuHome <span style={{marginLeft: '10px', fontSize: '14px'}}>by EPS-Refugee</span></p>
+          <img src="/assets/logo.png" />
         </div>
         {this.menuDisplay()}
       </Header>

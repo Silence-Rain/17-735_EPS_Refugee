@@ -6,13 +6,8 @@
   min-height: 80vh;
 }
 
-.logo {
-  height: 20px;
-  margin: 0 20px;
-  float: left;
-  color: #fff;
-  font-size: 24px;
-  font-weight: bold;
+.logo img {
+  height: 40px;
 }
 
 .settings {

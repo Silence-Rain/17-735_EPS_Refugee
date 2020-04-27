@@ -16,5 +16,13 @@
 
 .main-content h1 {
 	font-size: 30px;
-	margin: 50px 0;
+	margin: 20px 0;
+}
+
+.logo img {
+	height: 40px;
+}
+
+.center-logo {
+	width: 300px;
 }

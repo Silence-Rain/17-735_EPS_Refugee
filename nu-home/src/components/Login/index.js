@@ -60,13 +60,14 @@ class LoginForm extends React.Component {
 
         <Header>
           <div className="logo">
-            <p>nuHome <span style={{marginLeft: '10px', fontSize: '14px'}}>by EPS-Refugee</span></p>
+            <img src="/assets/logo.png" />
           </div>
         </Header>
 
         <Layout className="main-layout">
           <Content className="main-content">
             <div style={{ width: "300px" }}>
+              <img src="/assets/logo_dark.png" className="center-logo"/>
               <h1>Sign in</h1>
 
               <Form
