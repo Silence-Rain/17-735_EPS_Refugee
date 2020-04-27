@@ -1,5 +1,5 @@
 import React from "react";
-import { Table, Popconfirm, Divider, message } from 'antd';
+import { Table, Popconfirm, Divider, Button, message } from 'antd';
 import { withRouter } from 'react-router-dom';
 import api from '../../api';
 import store from '../../redux/store';
@@ -18,7 +18,7 @@ class RefugeeStatus extends React.Component {
         key: 'document',
         render: (text, record) => (
           <span>
-            {record.document ? <a href={`${record.username}`} target="_blank" rel="noopener noreferrer">Download</a> : "Not Uploaded"}
+            {record.document ? <a href={`http://${document.URL.split("/")[2]}/downloads/documents/${record.username}`} target="_blank" rel="noopener noreferrer">Download</a> : "Not Uploaded"}
           </span>
         ),
       },
@@ -27,13 +27,13 @@ class RefugeeStatus extends React.Component {
         key: 'action',
         render: (text, record) => (
           <span>
-            <a href="!#" onClick={() => {this.redirectToChat(record.username)}}>Chat</a>
+            <Button type="link" onClick={() => {this.redirectToChat(record.username)}}>Chat</Button>
             <Divider type="vertical"/>
             <Popconfirm 
               title={`Confirm the identity of ${record.username}?`} 
               onConfirm={() => this.verifyRefugee(record.username)}
             >
-              <a href="!#">Verify</a>
+              <Button type="link">Verify</Button>
             </Popconfirm>
           </span>
         ),
@@ -53,13 +53,16 @@ class RefugeeStatus extends React.Component {
         })
       })
       .catch(err => {
-        message.error(`Load RefugeeStatus failed!: ${err.response.data.res.message}`)
+        if (err.response.data.res) {
+          message.error(`Load RefugeeStatus failed!: ${err.response.data.res.message}`)
+        } else {
+          message.error(`Network error: ${err}`)
+        }
       })
   }
 
   redirectToChat = username => {
-    console.log(username)
-    this.props.history.push("/home/dm")
+    this.props.history.replace(`/home/dm/${username}`)
   }
 
   verifyRefugee = username => {
@@ -77,7 +80,11 @@ class RefugeeStatus extends React.Component {
         })
       })
       .catch(err => {
-        message.error(`Verification failed!: ${err.response.data.res.message}`)
+        if (err.response.data.res) {
+          message.error(`Verification failed!: ${err.response.data.res.message}`)
+        } else {
+          message.error(`Network error: ${err}`)
+        }
       })
   }
 

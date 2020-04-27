@@ -112,7 +112,7 @@ class Index extends React.Component {
         <Sider breakpoint="xs" collapsedWidth="0" className="site-layout-content" width={250}>
           <Menu
             mode="inline"
-            defaultSelectedKeys={['dm']}
+            defaultSelectedKeys={[(this.state.stores.auth.user.user_type === "refugee" ? 'dm' : 'forum')]}
             defaultOpenKeys={['forum']}
             style={{ height: '100%', borderRight: 0 }}
           >
@@ -120,7 +120,12 @@ class Index extends React.Component {
               <span>
                 <MailOutlined />
               </span>
-              <Link to={`${this.props.match.path}/dm`}>Direct Message</Link>
+              <Link to={
+                `${this.props.match.path}/dm/${this.state.stores.auth.user.user_type === "refugee" ? this.state.stores.auth.user.assigned_ngo : "default"}`
+                }
+              >
+                Direct Message
+              </Link>
             </Menu.Item>
 
           {/*If the user is an unverified refugee, then he/she can not access the forum page*/}

@@ -10,6 +10,7 @@ import { withRouter } from 'react-router-dom';
 const id_props = {
   name: 'document',
   showUploadList: false,
+  accept: ".pdf",
   customRequest: ({ file }) => {
     const formData = new FormData();
     formData.append("document", file)
@@ -107,7 +108,7 @@ class Settings extends React.Component {
       }
     })
     .then(res => {
-      message.info("Account deletion success! You will be logged out in 3 seconds...")
+      message.info("Account deletion success! You will be logged out now")
       store.dispatch(logout())
         .then(res => {
           this.props.history.replace("/login")
