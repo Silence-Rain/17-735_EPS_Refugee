@@ -12,7 +12,7 @@ wss.on('connection', ws => {
       let username = msg.data
 
       // 拉取最新的未读消息
-      request(`http://127.0.0.1/api/get_messages/?username=${username}`, (err, response, body) => {
+      request(`https://www.silence-rain.com/api/get_messages/?username=${username}`, (err, response, body) => {
         if (!err && response.statusCode == 200) { 
           res = JSON.parse(body).res
 
@@ -25,7 +25,7 @@ wss.on('connection', ws => {
     } else if (msg.type === "message") {
       // 放进数据库
       request({
-          url: "http://127.0.0.1/api/new_message/",
+          url: "https://www.silence-rain.com/api/new_message/",
           method: "POST",
           json: true,
           headers: {
