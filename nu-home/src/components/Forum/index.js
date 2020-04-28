@@ -219,9 +219,11 @@ class Forum extends React.Component {
                       placement="topLeft"
                       content={
                         <div>
-                          <p>{`Username: ${item.user.username}`}</p>
-                          Avatar: <Avatar src={`/assets/avatars/avatar${item.user.avatar}.png`} />
-                          <p>{`Bio: ${item.user.bio}`}</p>
+                          <Space>
+                            <Avatar src={`/assets/avatars/avatar${item.user.avatar}.png`} />
+                            <b>{item.user.username}</b>
+                          </Space>
+                          <p>{`${item.user.bio}`}</p>
                         </div>
                       } 
                       title="Author's Profile"

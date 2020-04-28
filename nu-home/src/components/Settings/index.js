@@ -170,12 +170,13 @@ class Settings extends React.Component {
         }
         
         <h4>Subject access request (SAR)</h4>
-        <p>Description of SAR blah blah blah</p>
+        <p>Ever wonder what your nuHome data looks like? Click the link to initiate a subject access request (SAR), which is basically the ability to download all of your personal data we have stored at nuHome to date.</p>
         <Button type="primary" onClick={this.handleSAR}>Initiate SAR</Button>
         <Divider />
         
         <h4>Delete your account</h4>
-        <p>Are you sure???!!!</p>
+        <p>Click the button below to delete your nuHome account. </p>
+        <p>Make sure you have thought through this decision carefully. There is no way to change your mind once your account is deleted--you will have to register and verify your identity all over again if you ever desire to regain access!</p>
         <Button type="primary" danger onClick={this.handleDeleteAccount}>Delete account</Button>
 
       </div>
