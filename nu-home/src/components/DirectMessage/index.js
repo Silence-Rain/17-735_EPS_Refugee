@@ -97,14 +97,16 @@ class DirectMessage extends React.Component {
 
       if (msg.type === "init") {
         this.setState({
-          messages: msg.data.map(v => {
-            return {
-              author: v.from_user,
-              avatar: v.from_user === this.state.from.author ? this.state.from.avatar : this.state.to.avatar,
-              content: v.content,
-              datetime: moment(v.date_time).fromNow()
-            }
-          })
+          messages: msg.data
+            .filter(v => (v.from_user === this.state.to.author || v.to_user === this.state.to.author))
+            .map(v => {
+              return {
+                author: v.from_user,
+                avatar: v.from_user === this.state.from.author ? this.state.from.avatar : this.state.to.avatar,
+                content: v.content,
+                datetime: moment(v.date_time).fromNow()
+              }
+            })
         })
       } else if (msg.type === "message") {
         this.setState({

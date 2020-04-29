@@ -9,9 +9,11 @@ export const loadUser = () => (dispatch, getState) => {
     }
   })
     .then(res => {
+      let temp_res = res.data.res
+      temp_res["isVerified"] = res.data.res.verification_status
       dispatch({
         type: "LOAD_SUCCESS",
-        payload: res.data.res
+        payload: temp_res
       });
     })
     .catch(err => {

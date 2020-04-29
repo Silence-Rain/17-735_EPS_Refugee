@@ -94,6 +94,10 @@ class RefugeeStatus extends React.Component {
     window.open(`http://${document.URL.split("/")[2]}/downloads/decrypt.py`)
   }
 
+  downloadKey = () => {
+    window.open(`http://${document.URL.split("/")[2]}/keys/${store.getState().auth.user.username}/key.key`)
+  }
+
   downloadDeletion = () => {
     window.open(`http://${document.URL.split("/")[2]}/downloads/delete.py`)
   }
@@ -105,6 +109,7 @@ class RefugeeStatus extends React.Component {
       	<h2>RefugeeStatus </h2>
         <div className="row-buttons">
           <Space>
+            <Button type="primary" onClick={this.downloadKey}><DownloadOutlined/> Download decryption key</Button>
             <Button type="primary" onClick={this.downloadDecryption}><DownloadOutlined/> Download decrypt script</Button>
             <Button type="primary"  onClick={this.downloadDeletion}><DownloadOutlined/> Download secure deletion script</Button>
           </Space>

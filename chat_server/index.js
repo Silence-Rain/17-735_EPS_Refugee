@@ -3,6 +3,7 @@ const WebSocket = require('ws')
 const WebSocketServer = WebSocket.Server
 
 const wss = new WebSocketServer({port: 8888})
+const baseURL = "http://localhost" // "https://www.silence-rain.com"
 
 wss.on('connection', ws => {
   ws.on('message', message => {
@@ -12,7 +13,7 @@ wss.on('connection', ws => {
       let username = msg.data
 
       // 拉取最新的未读消息
-      request(`https://www.silence-rain.com/api/get_messages/?username=${username}`, (err, response, body) => {
+      request(`${baseURL}/api/get_messages/?username=${username}`, (err, response, body) => {
         if (!err && response.statusCode == 200) { 
           res = JSON.parse(body).res
 
@@ -20,12 +21,13 @@ wss.on('connection', ws => {
             type: "init",
             data: res
           }))
+          console.log(`${username} login`)
         }
       })      
     } else if (msg.type === "message") {
       // 放进数据库
       request({
-          url: "https://www.silence-rain.com/api/new_message/",
+          url: `${baseURL}/api/new_message/`,
           method: "POST",
           json: true,
           headers: {
@@ -33,10 +35,12 @@ wss.on('connection', ws => {
           },
           body: msg
         }, (err, response, body) => {
+            console.log(err, response.statusCode)
             if (!err && response.statusCode == 200) {
               ws.send(JSON.stringify({
                 type: "confirm"
               }))
+              console.log(`${username} confirm receive`)
 
               wss.clients.forEach(client => {
                 if (client.readyState === WebSocket.OPEN) {
