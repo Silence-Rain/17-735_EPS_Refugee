@@ -10,6 +10,7 @@ class App extends React.Component {
     showContact: false
   }
 
+  // Pop-up modal dialog for privacy policy
   policyModal = () => {
     return (
       <Modal
@@ -47,6 +48,7 @@ class App extends React.Component {
     )
   };
 
+  // Pop-up modal dialog for contact info
   contactModal = () => {
     return (
       <Modal

@@ -12,6 +12,8 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    // When load user succeed
+    // update user profile but keep the token
     case "LOAD_SUCCESS":
       return {
         ...state,

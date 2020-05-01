@@ -7,6 +7,7 @@ import api from '../../api';
 import { loadUser, logout } from '../../redux/actions/authAction';
 import { withRouter } from 'react-router-dom';
 
+// Configurations for file upload component
 const id_props = {
   name: 'document',
   showUploadList: false,
@@ -42,12 +43,14 @@ class Settings extends React.Component {
     };
   }
 
+  // When the component will be mounted, set the user profile using auth state in Redux
   componentWillMount () {
     this.setState({
       user: store.getState().auth.user
     })  
   }
 
+  // Handler for "Save bio" button
   handleUpdateBio = () => {
     api.put("/update_user_profile/", {
       "avatar": this.state.user.avatar,
@@ -78,10 +81,8 @@ class Settings extends React.Component {
     });
   }
 
-  // handleUpdateAvatar = e => {
-  //   console.log(e);
-  // }
-
+  // Handler for "Initiate SAR" button
+  // Trigger download by opening another tab
   handleSAR = () => {
     api.get("/get_sar/", {
       headers: {
@@ -101,6 +102,8 @@ class Settings extends React.Component {
     });
   }
 
+  // Handler for "Delete Account" button
+  // Logout after account deletion
   handleDeleteAccount = () => {
     api.delete("/delete_user_profile/", {
       headers: {
@@ -127,6 +130,8 @@ class Settings extends React.Component {
   }
 
   // Layout of Settings component
+  // Only display "Bio" TextArea to refugees and NGO workers
+  // Only display "File Upload" function to unverified refugees
   render () {
     return (
       <div style={{ width: "60%" }}>
@@ -138,7 +143,6 @@ class Settings extends React.Component {
             <div>
               <Space>
                 <Avatar src={`/assets/avatars/avatar${this.state.user.avatar}.png`}/>
-                {/*<Button type="primary">Change avatar</Button>*/}
               </Space>
             </div>
           </Space>

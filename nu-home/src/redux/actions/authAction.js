@@ -1,6 +1,9 @@
 import { returnError, clearError } from './errorAction';
 import api from "../../api"
 
+// Action creator for loading user profile
+// Note that CSRF token is attached after logged-in
+// Dispatch the corresponding events to reducer, reducer will update the store accordingly
 export const loadUser = () => (dispatch, getState) => {
   dispatch(clearError());
   return api.get("/get_user_profile/", {

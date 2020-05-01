@@ -9,6 +9,7 @@ import './index.css';
 class RefugeeStatus extends React.Component {
   state = {
     data: [],
+    // Configurations of main table component
     columns: [
       {
         title: 'Username',
@@ -43,6 +44,7 @@ class RefugeeStatus extends React.Component {
     ]
   }
 
+  // When the component is mounted, request all unverified refugees of this certain NGO worker and render the page
   componentDidMount () {
     api.get("/get_unverified_users/", {
       headers: {
@@ -63,10 +65,13 @@ class RefugeeStatus extends React.Component {
       })
   }
 
+  // Handler for "Chat" button
+  // Redirect to DirectMessage with that certain refugee
   redirectToChat = username => {
     this.props.history.replace(`/home/dm/${username}`)
   }
 
+  // Handler for "Verify" button
   verifyRefugee = username => {
     api.put("/verify_user/", {
       username: username
@@ -90,14 +95,17 @@ class RefugeeStatus extends React.Component {
       })
   }
 
+  // Handler for "Download decryption script" button
   downloadDecryption = () => {
     window.open(`http://${document.URL.split("/")[2]}/downloads/decrypt.py`)
   }
 
+  // Handler for "Download key" button
   downloadKey = () => {
     window.open(`http://${document.URL.split("/")[2]}/keys/${store.getState().auth.user.username}/key.key`)
   }
 
+  // Handler for "Download secure deletion script" button
   downloadDeletion = () => {
     window.open(`http://${document.URL.split("/")[2]}/downloads/delete.py`)
   }

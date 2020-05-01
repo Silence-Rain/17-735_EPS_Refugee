@@ -10,6 +10,10 @@ import RefugeeStatus from './components/RefugeeStatus';
 import Settings from './components/Settings';
 import store from './redux/store'
 
+// Implementation of front-end router
+
+// Definition of PrivateRoute
+// Unauthorized accesses will be redirected to the login page
 const PrivateRoute = ({ children, ...rest }) => {
   return (
     <Route
@@ -21,6 +25,8 @@ const PrivateRoute = ({ children, ...rest }) => {
   );
 }
 
+// Definition of 404 route
+// Returned when users trying to access non-existing urls
 const NoMatch = () => {
   return (
     <div style={{ textAlign: "center" }}>
@@ -31,6 +37,7 @@ const NoMatch = () => {
   );
 }
 
+// MainRouter for the App component
 const MainRouter = () => {
   return (
     <Switch>
@@ -53,6 +60,8 @@ const MainRouter = () => {
   )
 }
 
+// ViewRouter for the Index component
+// Change of URL only affect the right side of Index component, which means the menu and navigation bar will not be rendered again
 const ViewRouter = (props) => {
   return (
     <Switch>

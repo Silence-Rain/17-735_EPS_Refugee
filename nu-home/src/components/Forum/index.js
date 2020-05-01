@@ -7,6 +7,7 @@ import api from '../../api';
 const { Option } = Select;
 const categories = ["important", "social", "jobs", "accomodation", "resources", "other"]
 
+// Layout of "New Post" modal dialog
 const PostCreateForm = ({ visible, onCreate, onCancel }) => {
   const [form] = Form.useForm();
 
@@ -92,10 +93,12 @@ class Forum extends React.Component {
     data: []
   }
 
+  // When the component is mounted, load all posts from server
   componentDidMount () {
     this.loadPosts()
   }
 
+  // Handler for "Create post" button
   onCreate = values => {
     api.post("/new_post/", values, {
       headers: {
@@ -116,6 +119,7 @@ class Forum extends React.Component {
     });
   }
 
+  // Handler for "Delete post" button
   onDelete = id => {
     api.delete("/delete_post/", {
       headers: {
@@ -138,6 +142,7 @@ class Forum extends React.Component {
     });
   }
 
+  // Handler for "Verify post" & "Mark as false" button
   onVerify = (id, status) => {
     api.put("/update_post_status/", {
       "post_id": id,
@@ -160,6 +165,7 @@ class Forum extends React.Component {
     });
   }
 
+  // Request all posts from server
   loadPosts = () => {
     api.get("/get_all_posts/", {
       headers: {
@@ -202,6 +208,7 @@ class Forum extends React.Component {
           pagination={{
             pageSize: 10
           }}
+          // Use array.filter to switch between categories, will not request for posts every time
           dataSource={this.state.data.filter(e => e.category === this.props.match.params.category)}
           renderItem={item => (
             <List.Item
@@ -211,7 +218,6 @@ class Forum extends React.Component {
                 avatar={<Avatar src={`/assets/avatars/avatar${item.user.avatar}.png`} />}
                 title={
                   item.title
-                  //<a href={item.href}>{item.title}</a>
                 }
                 description={
                   <div>

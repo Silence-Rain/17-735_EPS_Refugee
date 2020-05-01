@@ -36,7 +36,7 @@ class LoginForm extends React.Component {
     this.unsubscribe();
   }
 
-  // Handler for "Login" buttion
+  // Handler for "Login" button
   // If login succeed, redirect to the homepage
   onFinish = values => {
     store.dispatch(login({...values}))

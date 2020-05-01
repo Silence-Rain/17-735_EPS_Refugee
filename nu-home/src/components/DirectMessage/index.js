@@ -34,7 +34,6 @@ const Editor = ({ onChange, onSubmit, submitting, value }) => (
 
 class DirectMessage extends React.Component {
   state = {
-    // Fake data for demo purpose
     messages: [],
     submitting: false,
     value: '',
@@ -49,6 +48,7 @@ class DirectMessage extends React.Component {
   };
   ws = null;
 
+  // When the component will be mounted, set profiles for both sender and receiver
   componentWillMount () {
     this.setState({
       from: {
@@ -62,6 +62,8 @@ class DirectMessage extends React.Component {
     })
   }
 
+  // When the component is mounted, set avatar for receiver,
+  // establish WebSocket connection with chat server, and finish all WebSocket configurations
   componentDidMount () {
     api.get("/get_avatar/", {
       params: {
@@ -85,6 +87,7 @@ class DirectMessage extends React.Component {
 
     let baseURL = process.env.NODE_ENV === 'production' ? 'wss://www.silence-rain.com/chat/' : 'ws://localhost/chat/';
     this.ws = new WebSocket(baseURL);
+    // When WS connection is established, send the sender's username to help server-side init
     this.ws.onopen = () => {
       this.ws.send(JSON.stringify({
         type: "init",
@@ -95,6 +98,7 @@ class DirectMessage extends React.Component {
     this.ws.onmessage = message => {
       let msg = JSON.parse(message.data)
 
+      // Client init: receive all previous messages
       if (msg.type === "init") {
         this.setState({
           messages: msg.data
@@ -108,6 +112,7 @@ class DirectMessage extends React.Component {
               }
             })
         })
+      // When receiving a new message, add and display it
       } else if (msg.type === "message") {
         this.setState({
           messages: [
@@ -119,6 +124,7 @@ class DirectMessage extends React.Component {
             },
           ],
         });
+      // When receiving a confirmation, enable the "send message" button again and display the newly-sent message
       } else if (msg.type === "confirm") {
         this.setState({
           submitting: false,
@@ -132,6 +138,7 @@ class DirectMessage extends React.Component {
             },
           ],
         });
+      // When receiving a broadcast message, only process it if it is belong to this client
       } else if (msg.type === "broadcast") {
         if (msg.to_user === this.state.from.author) {
           this.setState({
@@ -155,6 +162,7 @@ class DirectMessage extends React.Component {
       return;
     }
 
+    // Disable the "send message" button and send the new message to server
     this.setState({
       submitting: true,
     });
